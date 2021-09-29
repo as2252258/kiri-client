@@ -1,0 +1,25 @@
+{
+  "name": "game-worker/kiri-client",
+  "description": "db",
+  "authors": [
+    {
+      "name": "XiangLin",
+      "email": "as2252258@163.com"
+    }
+  ],
+  "license": "MIT",
+  "require": {
+    "php": ">=8.0",
+    "ext-json": "*",
+    "ext-redis": "*",
+    "psr/http-client": "^1.0",
+    "psr/http-message": "^1.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Http\\Handler\\Client\\": "src/"
+    }
+  },
+  "require-dev": {
+  }
+}
