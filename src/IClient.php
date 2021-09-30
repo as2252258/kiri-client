@@ -78,13 +78,6 @@ interface IClient
 
 
 	/**
-	 * @param string $host
-	 * @return static
-	 */
-	public function withHost(string $host): static;
-
-
-	/**
 	 * @param array $header
 	 * @return static
 	 */
@@ -160,13 +153,6 @@ interface IClient
 	 * @return static
 	 */
 	public function withCa(string $ssl_key_file): static;
-
-
-	/**
-	 * @param int $port
-	 * @return static
-	 */
-	public function withPort(int $port): static;
 
 
 	/**

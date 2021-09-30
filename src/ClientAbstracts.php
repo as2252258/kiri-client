@@ -8,7 +8,6 @@ use Closure;
 use Http\Handler\Context;
 use Http\Message\Stream;
 use JetBrains\PhpStorm\Pure;
-use Kiri\Abstracts\Component;
 use Kiri\Core\Help;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
@@ -21,7 +20,7 @@ defined('SPLIT_URL') or define('SPLIT_URL', '/(http[s]?:\/\/)?(([\w\-_]+\.)+\w+(
  * Class ClientAbstracts
  * @package Http\Handler\Client
  */
-abstract class ClientAbstracts extends Component implements IClient
+abstract class ClientAbstracts implements IClient
 {
 
 	const POST = 'post';
@@ -55,11 +54,13 @@ abstract class ClientAbstracts extends Component implements IClient
 
 
 	/**
-	 * @return static
+	 * @param $host
+	 * @param $port
+	 * @param false $isSSL
 	 */
-	public static function NewRequest(): static
+	public function __construct($host, $port, bool $isSSL = false)
 	{
-		return new static();
+		$this->withHost($host)->withPort($port)->withIsSSL($isSSL);
 	}
 
 
@@ -185,7 +186,7 @@ abstract class ClientAbstracts extends Component implements IClient
 	 * @param string $host
 	 * @return ClientAbstracts
 	 */
-	public function withHost(string $host): static
+	private function withHost(string $host): static
 	{
 		$this->host = $host;
 		if (Context::inCoroutine()) {
@@ -297,7 +298,7 @@ abstract class ClientAbstracts extends Component implements IClient
 	 * @param bool $isSSL
 	 * @return ClientAbstracts
 	 */
-	public function withIsSSL(bool $isSSL): static
+	private function withIsSSL(bool $isSSL): static
 	{
 		$this->isSSL = $isSSL;
 		return $this;
@@ -394,7 +395,7 @@ abstract class ClientAbstracts extends Component implements IClient
 	 * @param int $port
 	 * @return ClientAbstracts
 	 */
-	public function withPort(int $port): static
+	private function withPort(int $port): static
 	{
 		$this->port = $port;
 		return $this;
