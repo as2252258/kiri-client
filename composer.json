@@ -17,7 +17,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Http\\Handler\\Client\\": "src/"
+      "Http\\Client\\": "src/"
     }
   },
   "require-dev": {

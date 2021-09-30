@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Http\Handler\Client;
+namespace Http\Client;
 
 
 use Closure;

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Http\Handler\Client;
+namespace Http\Client;
 
 
 use CurlHandle;
