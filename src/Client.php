@@ -13,6 +13,8 @@ use Exception;
 use Http\Message\Response;
 use Http\Message\Stream;
 use JetBrains\PhpStorm\Pure;
+use Kiri\Abstracts\Logger;
+use Kiri\Kiri;
 use Psr\Http\Message\ResponseInterface;
 use Swoole\Coroutine\Http\Client as SwowClient;
 
@@ -57,7 +59,7 @@ class Client extends ClientAbstracts
 				->withHeaders($client->getHeaders())
 				->withBody(new Stream($client->getBody()));
 		} catch (\Throwable $exception) {
-			$this->addError($exception, 'rpc');
+			Kiri::getDi()->get(Logger::class)->error('rpc', [$exception]);
 			return (new Response())->withStatus(-1)->withHeaders([])
 				->withBody(new Stream(jTraceEx($exception)));
 		}
