@@ -298,7 +298,7 @@ abstract class ClientAbstracts implements IClient
 	 * @param bool $isSSL
 	 * @return ClientAbstracts
 	 */
-	private function withIsSSL(bool $isSSL): static
+	public function withIsSSL(bool $isSSL): static
 	{
 		$this->isSSL = $isSSL;
 		return $this;
@@ -555,7 +555,7 @@ abstract class ClientAbstracts implements IClient
 	 * @return bool
 	 * check isPost Request
 	 */
-	#[Pure] public function isPost(): bool
+	#[Pure] protected function isPost(): bool
 	{
 		return strtolower($this->method) === self::POST;
 	}
@@ -564,7 +564,7 @@ abstract class ClientAbstracts implements IClient
 	 * @return bool
 	 * check isPost Request
 	 */
-	#[Pure] public function isUpload(): bool
+	#[Pure] protected function isUpload(): bool
 	{
 		return strtolower($this->method) === self::UPLOAD;
 	}
@@ -575,7 +575,7 @@ abstract class ClientAbstracts implements IClient
 	 *
 	 * check isGet Request
 	 */
-	#[Pure] public function isGet(): bool
+	#[Pure] protected function isGet(): bool
 	{
 		return strtolower($this->method) === self::GET;
 	}
