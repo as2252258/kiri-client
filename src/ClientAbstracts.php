@@ -5,7 +5,7 @@ namespace Http\Client;
 
 
 use Closure;
-use Http\Handler\Context;
+use Kiri\Context;
 use Http\Message\Stream;
 use JetBrains\PhpStorm\Pure;
 use Kiri\Core\Help;

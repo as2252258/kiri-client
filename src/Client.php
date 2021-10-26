@@ -2,7 +2,7 @@
 
 namespace Http\Client;
 
-use Http\Handler\Context;
+use Kiri\Context;
 
 
 /**
