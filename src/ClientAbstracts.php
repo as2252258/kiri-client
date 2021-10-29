@@ -5,9 +5,9 @@ namespace Http\Client;
 
 
 use Closure;
-use Kiri\Context;
 use Http\Message\Stream;
 use JetBrains\PhpStorm\Pure;
+use Kiri\Context;
 use Kiri\Core\Help;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
@@ -202,6 +202,16 @@ abstract class ClientAbstracts implements IClient
 	{
 		return $this->header;
 	}
+
+
+	/**
+	 * @return mixed|null
+	 */
+	public function getContentType(): ?string
+	{
+		return $this->header['Content-Type'] ?? $this->header['content-type'] ?? null;
+	}
+
 
 	/**
 	 * @param array $header
