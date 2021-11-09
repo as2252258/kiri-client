@@ -505,6 +505,7 @@ abstract class ClientAbstracts implements IClient
 	 */
 	protected function mergeParams($newData): string
 	{
+		if (empty($data)) return '';
 		if (!is_string($newData)) {
 			return $this->toRequest($newData);
 		}
