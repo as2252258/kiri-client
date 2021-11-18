@@ -15,66 +15,64 @@ interface IClient
 	/**
 	 * @param string $path
 	 * @param array $params
-	 * @return ResponseInterface
 	 */
-	public function get(string $path, array $params = []): ResponseInterface;
+	public function get(string $path, array $params = []): void;
 
 
 	/**
 	 * @param string $path
 	 * @param array $params
-	 * @return ResponseInterface
 	 */
-	public function post(string $path, array $params = []): ResponseInterface;
+	public function post(string $path, array $params = []): void;
+
+
+	/**
+	 *
+	 */
+	public function close(): void;
 
 
 	/**
 	 * @param string $path
 	 * @param array $params
-	 * @return ResponseInterface
 	 */
-	public function delete(string $path, array $params = []): ResponseInterface;
+	public function delete(string $path, array $params = []): void;
 
 
 	/**
 	 * @param string $path
 	 * @param array $params
-	 * @return ResponseInterface
 	 */
-	public function options(string $path, array $params = []): ResponseInterface;
+	public function options(string $path, array $params = []): void;
 
 
 	/**
 	 * @param string $path
 	 * @param array $params
-	 * @return ResponseInterface
 	 */
-	public function upload(string $path, array $params = []): ResponseInterface;
+	public function upload(string $path, array $params = []): void;
 
 
 	/**
 	 * @param string $path
 	 * @param array $params
-	 * @return ResponseInterface
 	 */
-	public function put(string $path, array $params = []): ResponseInterface;
+	public function put(string $path, array $params = []): void;
 
 
 	/**
 	 * @param string $path
 	 * @param array $params
-	 * @return ResponseInterface
 	 */
-	public function head(string $path, array $params = []): ResponseInterface;
+	public function head(string $path, array $params = []): void;
 
 
 	/**
 	 * @param string $method
 	 * @param string $path
 	 * @param array $params
-	 * @return ResponseInterface
 	 */
-	public function request(string $method, string $path, array $params = []): ResponseInterface;
+	public function request(string $method, string $path, array $params = []): void;
 
 
 	/**
@@ -174,4 +172,10 @@ interface IClient
 	 * @return static
 	 */
 	public function withContentType(string $contentType): static;
+
+
+	/**
+	 * @return mixed
+	 */
+	public function getBody(): mixed;
 }

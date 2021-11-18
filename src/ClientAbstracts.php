@@ -48,9 +48,39 @@ abstract class ClientAbstracts implements IClient
 	private int $port = 80;
 
 
+	/**
+	 * @var ResponseInterface|null
+	 */
+	protected ?ResponseInterface $body;
+
+
 	private ?StreamInterface $_data = null;
 
 	private int $connect_timeout = 1;
+
+
+	protected mixed $client;
+
+
+	/**
+	 * @return string|ResponseInterface|null
+	 */
+	public function getBody(): string|ResponseInterface|null
+	{
+		if ($this->body instanceof ResponseInterface) {
+			return $this->body->getBody()->getContents();
+		}
+		return $this->body;
+	}
+
+
+	/**
+	 * @param ResponseInterface|null $body
+	 */
+	public function setBody(?ResponseInterface $body): void
+	{
+		$this->body = $body;
+	}
 
 
 	/**
@@ -67,22 +97,20 @@ abstract class ClientAbstracts implements IClient
 	/**
 	 * @param string $path
 	 * @param array $params
-	 * @return ResponseInterface
 	 */
-	public function post(string $path, array $params = []): ResponseInterface
+	public function post(string $path, array $params = []): void
 	{
-		return $this->request(self::POST, $path, $params);
+		$this->request(self::POST, $path, $params);
 	}
 
 
 	/**
 	 * @param string $path
 	 * @param array $params
-	 * @return ResponseInterface
 	 */
-	public function put(string $path, array $params = []): ResponseInterface
+	public function put(string $path, array $params = []): void
 	{
-		return $this->request(self::PUT, $path, $params);
+		$this->request(self::PUT, $path, $params);
 	}
 
 
@@ -100,63 +128,57 @@ abstract class ClientAbstracts implements IClient
 	/**
 	 * @param string $path
 	 * @param array $params
-	 * @return ResponseInterface
 	 */
-	public function head(string $path, array $params = []): ResponseInterface
+	public function head(string $path, array $params = []): void
 	{
-		return $this->request(self::HEAD, $path, $params);
+		$this->request(self::HEAD, $path, $params);
 	}
 
 
 	/**
 	 * @param string $path
 	 * @param array $params
-	 * @return ResponseInterface
 	 */
-	public function get(string $path, array $params = []): ResponseInterface
+	public function get(string $path, array $params = []): void
 	{
-		return $this->request(self::GET, $path, $params);
+		$this->request(self::GET, $path, $params);
 	}
 
 	/**
 	 * @param string $path
 	 * @param array $params
-	 * @return ResponseInterface
 	 */
-	public function option(string $path, array $params = []): ResponseInterface
+	public function option(string $path, array $params = []): void
 	{
-		return $this->request(self::OPTIONS, $path, $params);
+		$this->request(self::OPTIONS, $path, $params);
 	}
 
 	/**
 	 * @param string $path
 	 * @param array $params
-	 * @return ResponseInterface
 	 */
-	public function delete(string $path, array $params = []): ResponseInterface
+	public function delete(string $path, array $params = []): void
 	{
-		return $this->request(self::DELETE, $path, $params);
+		$this->request(self::DELETE, $path, $params);
 	}
 
 	/**
 	 * @param string $path
 	 * @param array $params
-	 * @return ResponseInterface
 	 */
-	public function options(string $path, array $params = []): ResponseInterface
+	public function options(string $path, array $params = []): void
 	{
-		return $this->request(self::OPTIONS, $path, $params);
+		$this->request(self::OPTIONS, $path, $params);
 
 	}
 
 	/**
 	 * @param string $path
 	 * @param array $params
-	 * @return ResponseInterface
 	 */
-	public function upload(string $path, array $params = []): ResponseInterface
+	public function upload(string $path, array $params = []): void
 	{
-		return $this->request(self::UPLOAD, $path, $params);
+		$this->request(self::UPLOAD, $path, $params);
 	}
 
 

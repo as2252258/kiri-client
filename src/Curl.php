@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Http\Client;
 
 
-use CurlHandle;
 use Exception;
 use Http\Message\Response;
 use Http\Message\Stream;
@@ -23,15 +22,17 @@ class Curl extends ClientAbstracts
 	 * @param $method
 	 * @param $path
 	 * @param array $params
-	 * @return ResponseInterface
 	 * @throws Exception
 	 */
-	public function request($method, $path, array $params = []): ResponseInterface
+	public function request($method, $path, array $params = []): void
 	{
 		if ($method == self::GET) {
 			$path = $this->joinGetParams($path, $params);
 		}
-		return $this->execute($this->getCurlHandler($path, $method, $params));
+
+		$this->getCurlHandler($path, $method, $params);
+
+		$this->execute();
 	}
 
 
@@ -39,10 +40,9 @@ class Curl extends ClientAbstracts
 	 * @param $path
 	 * @param $method
 	 * @param $params
-	 * @return CurlHandle
 	 * @throws Exception
 	 */
-	private function getCurlHandler($path, $method, $params): CurlHandle
+	private function getCurlHandler($path, $method, $params): void
 	{
 		[$host, $isHttps, $path] = $this->matchHost($path);
 
@@ -51,45 +51,43 @@ class Curl extends ClientAbstracts
 			$host .= ':' . $this->getPort();
 		}
 
-		$resource = $this->do(curl_init($host . $path), $host . $path, $method);
+		$this->do(curl_init($host . $path), $host . $path, $method);
 		if ($isHttps !== false) {
-			$this->curlHandlerSslSet($resource);
+			$this->curlHandlerSslSet();
 		}
 
 		$contents = $this->getData()->getContents();
 		if (empty($params) && empty($contents)) {
-			return $resource;
+			return;
 		}
 
 		if (!empty($contents)) {
-			curl_setopt($resource, CURLOPT_POSTFIELDS, $contents);
+			curl_setopt($this->client, CURLOPT_POSTFIELDS, $contents);
 		} else if ($method === self::POST) {
-			curl_setopt($resource, CURLOPT_POSTFIELDS, $this->mergeParams($params));
+			curl_setopt($this->client, CURLOPT_POSTFIELDS, $this->mergeParams($params));
 		} else if ($method === self::UPLOAD) {
-			curl_setopt($resource, CURLOPT_POSTFIELDS, $params);
+			curl_setopt($this->client, CURLOPT_POSTFIELDS, $params);
 		}
-		return $resource;
 	}
 
 
 	/**
-	 * @param $resource
 	 * @return void
 	 * @throws Exception
 	 */
-	private function curlHandlerSslSet($resource): void
+	private function curlHandlerSslSet(): void
 	{
 		if (!empty($this->ssl_key)) {
 			if (!file_exists($this->ssl_key)) {
 				throw new Exception('SSL protocol certificate not found.');
 			}
-			curl_setopt($resource, CURLOPT_SSLKEY, $this->getSslKeyFile());
+			curl_setopt($this->client, CURLOPT_SSLKEY, $this->getSslKeyFile());
 		}
 		if (!empty($this->ssl_cert)) {
 			if (!!file_exists($this->ssl_cert)) {
 				throw new Exception('SSL protocol certificate not found.');
 			}
-			curl_setopt($resource, CURLOPT_SSLCERT, $this->getSslCertFile());
+			curl_setopt($this->client, CURLOPT_SSLCERT, $this->getSslCertFile());
 		}
 	}
 
@@ -98,10 +96,9 @@ class Curl extends ClientAbstracts
 	 * @param $resource
 	 * @param $path
 	 * @param $method
-	 * @return CurlHandle
 	 * @throws Exception
 	 */
-	private function do($resource, $path, $method): CurlHandle
+	private function do($resource, $path, $method): void
 	{
 		curl_setopt($resource, CURLOPT_URL, $path);
 		curl_setopt($resource, CURLOPT_TIMEOUT, $this->getTimeout());                     // 超时设置
@@ -130,25 +127,31 @@ class Curl extends ClientAbstracts
 		}
 		curl_setopt($resource, CURLOPT_CUSTOMREQUEST, strtoupper($method));
 
-		return $resource;
+		$this->client = $resource;
 	}
 
 
 	/**
-	 * @param $curl
-	 * @return ResponseInterface
 	 * @throws Exception
 	 */
-	private function execute($curl): ResponseInterface
+	private function execute(): void
 	{
-		$output = curl_exec($curl);
-		curl_close($curl);
+		$output = curl_exec($this->client);
 		if ($output === false) {
-			$response = (new Response())->withStatus(400)->withBody(new Stream(curl_error($curl)));
+			$response = (new Response())->withStatus(400)->withBody(new Stream(curl_error($this->client)));
 		} else {
 			$response = $this->explode($output);
 		}
-		return $response;
+		$this->setBody($response);
+	}
+
+
+	/**
+	 *
+	 */
+	public function close(): void
+	{
+		curl_close($this->client);
 	}
 
 
