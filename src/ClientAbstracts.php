@@ -67,9 +67,6 @@ abstract class ClientAbstracts implements IClient
 	 */
 	public function getBody(): string|ResponseInterface|null
 	{
-		if ($this->body instanceof ResponseInterface) {
-			return $this->body->getBody()->getContents();
-		}
 		return $this->body;
 	}
 
