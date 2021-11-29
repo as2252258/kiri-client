@@ -48,10 +48,14 @@ abstract class ClientAbstracts implements IClient
 	private int $port = 80;
 
 
+
+	private int $statusCode = 200;
+
+
 	/**
-	 * @var ResponseInterface|null
+	 * @var string|null
 	 */
-	protected ?ResponseInterface $body;
+	protected ?string $body;
 
 
 	private ?StreamInterface $_data = null;
@@ -63,18 +67,36 @@ abstract class ClientAbstracts implements IClient
 
 
 	/**
-	 * @return string|null
+	 * @return int
 	 */
-	public function getBody(): string|null
+	public function getStatusCode(): int
 	{
-		return $this->body->getBody()->getContents();
+		return $this->statusCode;
 	}
 
 
 	/**
-	 * @param ResponseInterface|null $body
+	 * @param int $statusCode
 	 */
-	public function setBody(?ResponseInterface $body): void
+	public function setStatusCode(int $statusCode): void
+	{
+		$this->statusCode = $statusCode;
+	}
+
+
+	/**
+	 * @return string|null
+	 */
+	public function getBody(): string|null
+	{
+		return $this->body;
+	}
+
+
+	/**
+	 * @param ?string $body
+	 */
+	public function setBody(?string $body): void
 	{
 		$this->body = $body;
 	}

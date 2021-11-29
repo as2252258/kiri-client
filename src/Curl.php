@@ -138,11 +138,11 @@ class Curl extends ClientAbstracts
 	{
 		$output = curl_exec($this->client);
 		if ($output === false) {
-			$response = (new Response())->withStatus(400)->withBody(new Stream(curl_error($this->client)));
+			$this->setStatusCode(404);
+			$this->setBody(curl_error($this->client));
 		} else {
-			$response = $this->explode($output);
+			$this->explode($output);
 		}
-		$this->setBody($response);
 	}
 
 
@@ -157,10 +157,10 @@ class Curl extends ClientAbstracts
 
 	/**
 	 * @param $output
-	 * @return ResponseInterface
+	 * @return void
 	 * @throws Exception
 	 */
-	private function explode($output): ResponseInterface
+	private function explode($output): void
 	{
 		[$header, $body] = explode("\r\n\r\n", $output, 2);
 		if ($header == 'HTTP/1.1 100 Continue') {
@@ -170,8 +170,8 @@ class Curl extends ClientAbstracts
 		$header = explode("\r\n", $header);
 		$status = explode(' ', array_shift($header));
 
-		return (new Response())->withStatus(intval($status[1]))->withHeaders($this->headerFormat($header))
-			->withBody(new Stream($body));
+		$this->setStatusCode(intval($status[1]));
+		$this->setBody($body);
 	}
 
 	/**

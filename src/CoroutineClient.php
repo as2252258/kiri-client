@@ -10,8 +10,6 @@ declare(strict_types=1);
 namespace Http\Client;
 
 use Exception;
-use Http\Message\Response;
-use Http\Message\Stream;
 use JetBrains\PhpStorm\Pure;
 use Kiri\Abstracts\Logger;
 use Kiri\Kiri;
@@ -53,15 +51,12 @@ class CoroutineClient extends ClientAbstracts
 			if ($this->client->statusCode < 0) {
 				throw new Exception($this->client->errMsg);
 			}
-			$body = (new Response())->withStatus($this->client->getStatusCode())
-				->withHeaders($this->client->getHeaders())
-				->withBody(new Stream($this->client->getBody()));
+			$this->setStatusCode($this->client->getStatusCode());
+			$this->setBody($this->client->getBody());
 		} catch (\Throwable $exception) {
 			Kiri::getDi()->get(Logger::class)->error('rpc', [$exception]);
-			$body = (new Response())->withStatus(-1)->withHeaders([])
-				->withBody(new Stream(jTraceEx($exception)));
-		} finally {
-			$this->setBody($body);
+			$this->setStatusCode(-1);
+			$this->setBody(jTraceEx($exception));
 		}
 	}
 
