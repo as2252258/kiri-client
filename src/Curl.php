@@ -172,6 +172,7 @@ class Curl extends ClientAbstracts
 
 		$this->setStatusCode(intval($status[1]));
 		$this->setBody($body);
+		$this->setResponseHeader($header);
 	}
 
 	/**

@@ -49,6 +49,9 @@ abstract class ClientAbstracts implements IClient
 
 
 
+	private array $_responseHeader = [];
+
+
 	private int $statusCode = 200;
 
 
@@ -63,6 +66,9 @@ abstract class ClientAbstracts implements IClient
 	private int $connect_timeout = 1;
 
 
+	/**
+	 * @var resource|\Swoole\Coroutine\Http\Client
+	 */
 	protected mixed $client;
 
 
@@ -72,6 +78,24 @@ abstract class ClientAbstracts implements IClient
 	public function getStatusCode(): int
 	{
 		return $this->statusCode;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	public function getResponseHeader(): array
+	{
+		return $this->_responseHeader;
+	}
+
+
+	/**
+	 * @param array $responseHeader
+	 */
+	public function setResponseHeader(array $responseHeader): void
+	{
+		$this->_responseHeader = $responseHeader;
 	}
 
 
