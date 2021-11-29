@@ -9,7 +9,6 @@ use Http\Message\Stream;
 use JetBrains\PhpStorm\Pure;
 use Kiri\Context;
 use Kiri\Core\Help;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use Swoole\Coroutine\System;
 
@@ -48,7 +47,6 @@ abstract class ClientAbstracts implements IClient
 	private int $port = 80;
 
 
-
 	private array $_responseHeader = [];
 
 
@@ -84,9 +82,19 @@ abstract class ClientAbstracts implements IClient
 	/**
 	 * @return array
 	 */
-	public function getResponseHeader(): array
+	public function getResponseHeaders(): array
 	{
 		return $this->_responseHeader;
+	}
+
+
+	/**
+	 * @param string $key
+	 * @return string|int|null
+	 */
+	public function getResponseHeader(string $key): null|string|int
+	{
+		return $this->_responseHeader[$key] ?? null;
 	}
 
 
