@@ -50,18 +50,14 @@ class Curl extends ClientAbstracts
 		if ($this->getPort() != 443 && $this->getPort() != 80) {
 			$host .= ':' . $this->getPort();
 		}
-
-        var_dump($host . $path);
 		$this->do(curl_init($host . $path), $host . $path, $method);
 		if ($isHttps !== false) {
 			$this->curlHandlerSslSet();
 		}
-
 		$contents = $this->getData()->getContents();
 		if (empty($params) && empty($contents)) {
 			return;
 		}
-
 		if (!empty($contents)) {
 			curl_setopt($this->client, CURLOPT_POSTFIELDS, $contents);
 		} else if ($method === self::POST) {
@@ -104,7 +100,7 @@ class Curl extends ClientAbstracts
 
 		curl_setopt($resource, CURLOPT_HTTPHEADER, $this->parseHeaderMat());
 		if (defined('CURLOPT_SSL_FALSESTART')) {
-//			curl_setopt($resource, CURLOPT_SSL_FALSESTART, true);
+			curl_setopt($resource, CURLOPT_SSL_FALSESTART, true);
 		}
 		curl_setopt($resource, CURLOPT_FORBID_REUSE, false);
 		curl_setopt($resource, CURLOPT_FRESH_CONNECT, false);
@@ -133,7 +129,7 @@ class Curl extends ClientAbstracts
 	{
 		$output = curl_exec($this->client);
 		if ($output === false) {
-			$this->setStatusCode(404);
+			$this->setStatusCode(curl_errno($this->client));
 			$this->setBody(curl_error($this->client));
 		} else {
 			$this->explode($output);
