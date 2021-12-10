@@ -74,14 +74,14 @@ class Curl extends ClientAbstracts
 	 */
 	private function curlHandlerSslSet(): void
 	{
-        curl_setopt($this->client, CURLOPT_SSL_VERIFYPEER,FALSE);
-        curl_setopt($this->client, CURLOPT_SSL_VERIFYHOST, 'api.mch.weixin.qq.com');
-        if (!empty($this->getSslKeyFile()) && file_exists($this->getSslKeyFile())) {
-			curl_setopt($this->client, CURLOPT_SSLKEY, $this->getSslKeyFile());
-		}
-        if (!empty($this->getSslCertFile()) && file_exists($this->getSslCertFile())) {
-            curl_setopt($this->client, CURLOPT_SSLCERT, $this->getSslCertFile());
-		}
+//        curl_setopt($this->client, CURLOPT_SSL_VERIFYPEER,FALSE);
+//        curl_setopt($this->client, CURLOPT_SSL_VERIFYHOST, 'api.mch.weixin.qq.com');
+//        if (!empty($this->getSslKeyFile()) && file_exists($this->getSslKeyFile())) {
+//			curl_setopt($this->client, CURLOPT_SSLKEY, $this->getSslKeyFile());
+//		}
+//        if (!empty($this->getSslCertFile()) && file_exists($this->getSslCertFile())) {
+//            curl_setopt($this->client, CURLOPT_SSLCERT, $this->getSslCertFile());
+//		}
 	}
 
 
@@ -101,9 +101,9 @@ class Curl extends ClientAbstracts
 		curl_setopt($resource, CURLOPT_FAILONERROR, true);
 
 		curl_setopt($resource, CURLOPT_HTTPHEADER, $this->parseHeaderMat());
-		if (defined('CURLOPT_SSL_FALSESTART')) {
-			curl_setopt($resource, CURLOPT_SSL_FALSESTART, true);
-		}
+//		if (defined('CURLOPT_SSL_FALSESTART')) {
+//			curl_setopt($resource, CURLOPT_SSL_FALSESTART, true);
+//		}
 		curl_setopt($resource, CURLOPT_FORBID_REUSE, false);
 		curl_setopt($resource, CURLOPT_VERBOSE, TRUE);
 		curl_setopt($resource, CURLOPT_FRESH_CONNECT, false);
