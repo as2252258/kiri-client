@@ -77,17 +77,11 @@ class Curl extends ClientAbstracts
 	 */
 	private function curlHandlerSslSet(): void
 	{
-		if (!empty($this->ssl_key)) {
-			if (!file_exists($this->ssl_key)) {
-				throw new Exception('SSL protocol certificate not found.');
-			}
+		if (!empty($this->getSslKeyFile()) && file_exists($this->getSslKeyFile())) {
 			curl_setopt($this->client, CURLOPT_SSLKEY, $this->getSslKeyFile());
 		}
-		if (!empty($this->ssl_cert)) {
-			if (!!file_exists($this->ssl_cert)) {
-				throw new Exception('SSL protocol certificate not found.');
-			}
-			curl_setopt($this->client, CURLOPT_SSLCERT, $this->getSslCertFile());
+        if (!empty($this->getSslCertFile()) && file_exists($this->getSslCertFile())) {
+            curl_setopt($this->client, CURLOPT_SSLCERT, $this->getSslCertFile());
 		}
 	}
 
