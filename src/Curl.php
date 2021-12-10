@@ -74,7 +74,9 @@ class Curl extends ClientAbstracts
 	 */
 	private function curlHandlerSslSet(): void
 	{
-		if (!empty($this->getSslKeyFile()) && file_exists($this->getSslKeyFile())) {
+        curl_setopt($this->client, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($this->client, CURLOPT_SSL_VERIFYHOST, FALSE);
+        if (!empty($this->getSslKeyFile()) && file_exists($this->getSslKeyFile())) {
 			curl_setopt($this->client, CURLOPT_SSLKEY, $this->getSslKeyFile());
 		}
         if (!empty($this->getSslCertFile()) && file_exists($this->getSslCertFile())) {
