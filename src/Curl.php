@@ -75,7 +75,7 @@ class Curl extends ClientAbstracts
 	private function curlHandlerSslSet(): void
 	{
         curl_setopt($this->client, CURLOPT_SSL_VERIFYPEER, 1);
-        curl_setopt($this->client, CURLOPT_SSL_VERIFYHOST, $this->getHost());
+        curl_setopt($this->client, CURLOPT_SSL_VERIFYHOST, 'api.mch.weixin.qq.com');
         if (!empty($this->getSslKeyFile()) && file_exists($this->getSslKeyFile())) {
 			curl_setopt($this->client, CURLOPT_SSLKEY, $this->getSslKeyFile());
 		}
