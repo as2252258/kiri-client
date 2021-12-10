@@ -51,6 +51,7 @@ class Curl extends ClientAbstracts
 			$host .= ':' . $this->getPort();
 		}
 
+        var_dump($host . $path);
 		$this->do(curl_init($host . $path), $host . $path, $method);
 		if ($isHttps !== false) {
 			$this->curlHandlerSslSet();
