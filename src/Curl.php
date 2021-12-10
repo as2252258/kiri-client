@@ -104,7 +104,7 @@ class Curl extends ClientAbstracts
 
 		curl_setopt($resource, CURLOPT_HTTPHEADER, $this->parseHeaderMat());
 		if (defined('CURLOPT_SSL_FALSESTART')) {
-			curl_setopt($resource, CURLOPT_SSL_FALSESTART, true);
+//			curl_setopt($resource, CURLOPT_SSL_FALSESTART, true);
 		}
 		curl_setopt($resource, CURLOPT_FORBID_REUSE, false);
 		curl_setopt($resource, CURLOPT_FRESH_CONNECT, false);
