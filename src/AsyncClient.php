@@ -61,9 +61,9 @@ class AsyncClient extends ClientAbstracts
             if ($this->client->statusCode < 0) {
                 throw new Exception($this->client->errMsg);
             }
-            $this->setStatusCode($this->client->getStatusCode());
-            $this->setBody($this->client->getBody());
-            $this->setResponseHeader($this->client->headers);
+//            $this->setStatusCode($this->client->getStatusCode());
+//            $this->setBody($this->client->getBody());
+//            $this->setResponseHeader($this->client->headers);
         } catch (\Throwable $exception) {
             Kiri::getDi()->get(Logger::class)->error('rpc', [$exception]);
             $this->setStatusCode(-1);
@@ -114,8 +114,17 @@ class AsyncClient extends ClientAbstracts
 
         [$header, $body] = explode("\r\n\r\n", $revice);
 
+        var_dump($revice);
+
+        $header = explode("\r\n", $header);
+
+        $status = array_shift($header);
+
+        [$path, $status, $pro] = explode(' ', $status);
+
         $this->setBody($body);
-        $this->setResponseHeader(explode("\r\n", $header));
+        $this->setStatusCode(intval($status));
+        $this->setResponseHeader($header);
 
 //
 //        $this->client->setHeaders($this->getHeader());
