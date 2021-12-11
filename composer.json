@@ -12,6 +12,7 @@
     "php": ">=8.0",
     "ext-json": "*",
     "ext-redis": "*",
+    "ext-swoole": "*",
     "psr/http-client": "^1.0",
     "psr/http-message": "^1.0"
   },
