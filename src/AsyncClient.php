@@ -87,7 +87,12 @@ class AsyncClient extends ClientAbstracts
             $this->withAddedHeader('User-Agent', $this->getAgent());
         }
 
+
         $path = $this->setParams($path, $data);
+
+        $content = $this->getData()->getContents();
+
+        $this->withAddedHeader('Content-Length', $this->getData()->getSize());
 
         $array = [];
         $array[] = strtoupper($this->getMethod()) . ' ' . $path . ' HTTP/1.1';
@@ -97,9 +102,9 @@ class AsyncClient extends ClientAbstracts
             }
         }
         $array = implode("\r\n", $array) . "\r\n\r\n";
-        $this->client->send($array . $this->getData()->getContents());
+        $this->client->send($array . $content);
 
-        var_dump($array . $this->getData()->getContents());
+        var_dump($array . $content);
 
         $revice = $this->client->recv();
 
