@@ -116,7 +116,13 @@ class Curl extends ClientAbstracts
         }
         curl_setopt($resource, CURLOPT_CUSTOMREQUEST, strtoupper($method));
         $this->client = $resource;
+        if (!empty($this->caPath)) {
+            curl_setopt($this->client,CURLOPT_CAINFO, $this->caPath);
+        }
     }
+
+
+    private string $caPath = '';
 
 
     /**
@@ -125,7 +131,7 @@ class Curl extends ClientAbstracts
      */
     public function withCAInfo($path): static
     {
-        curl_setopt($this->client, CURLOPT_CAINFO, $path);
+        $this->caPath = $path;
         return $this;
     }
 
