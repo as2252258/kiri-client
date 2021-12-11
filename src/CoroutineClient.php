@@ -39,6 +39,16 @@ class CoroutineClient extends ClientAbstracts
 	}
 
 
+
+    /**
+     * @param $path
+     * @return $this
+     */
+    public function withCAInfo($path): static
+    {
+        return $this;
+    }
+
 	/**
 	 * @param $url
 	 * @param array|string $data
