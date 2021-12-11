@@ -68,7 +68,7 @@ abstract class ClientAbstracts implements IClient
 
 
     /**
-     * @var resource|\Swoole\Coroutine\Http\Client
+     * @var resource|\Swoole\Coroutine\Http\Client|\Swoole\Client
      */
     protected mixed $client;
 

@@ -12,7 +12,7 @@ class Client
 {
 
 
-	private CoroutineClient|Curl $abstracts;
+	private CoroutineClient|Curl|AsyncClient $abstracts;
 
 
 	/**
@@ -25,7 +25,7 @@ class Client
 		if (Context::inCoroutine()) {
 			$this->abstracts = new CoroutineClient($host, $port, $isSsl);
 		} else {
-			$this->abstracts = new Curl($host, $port, $isSsl);
+			$this->abstracts = new AsyncClient($host, $port, $isSsl);
 		}
 	}
 
