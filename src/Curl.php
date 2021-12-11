@@ -74,8 +74,6 @@ class Curl extends ClientAbstracts
 	 */
 	private function curlHandlerSslSet(): void
 	{
-//        curl_setopt($this->client, CURLOPT_SSL_VERIFYPEER,FALSE);
-//        curl_setopt($this->client, CURLOPT_SSL_VERIFYHOST, 'api.mch.weixin.qq.com');
 //        if (!empty($this->getSslKeyFile()) && file_exists($this->getSslKeyFile())) {
 //			curl_setopt($this->client, CURLOPT_SSLKEY, $this->getSslKeyFile());
 //		}
@@ -96,22 +94,17 @@ class Curl extends ClientAbstracts
 		curl_setopt($resource, CURLOPT_URL, $path);
 		curl_setopt($resource, CURLOPT_TIMEOUT, $this->getTimeout());                     // 超时设置
 		curl_setopt($resource, CURLOPT_CONNECTTIMEOUT, $this->getConnectTimeout());       // 超时设置
-
 		curl_setopt($resource, CURLOPT_HEADER, true);
 		curl_setopt($resource, CURLOPT_FAILONERROR, true);
-
 		curl_setopt($resource, CURLOPT_HTTPHEADER, $this->parseHeaderMat());
-//		if (defined('CURLOPT_SSL_FALSESTART')) {
-//			curl_setopt($resource, CURLOPT_SSL_FALSESTART, true);
-//		}
+		if (defined('CURLOPT_SSL_FALSESTART')) {
+			curl_setopt($resource, CURLOPT_SSL_FALSESTART, true);
+		}
 		curl_setopt($resource, CURLOPT_FORBID_REUSE, false);
-		curl_setopt($resource, CURLOPT_VERBOSE, TRUE);
 		curl_setopt($resource, CURLOPT_FRESH_CONNECT, false);
-
 		if (!empty($this->getAgent())) {
 			curl_setopt($resource, CURLOPT_USERAGENT, $this->getAgent());
 		}
-
 		curl_setopt($resource, CURLOPT_NOBODY, FALSE);
 		curl_setopt($resource, CURLOPT_RETURNTRANSFER, TRUE);//返回内容
 		curl_setopt($resource, CURLOPT_FOLLOWLOCATION, TRUE);// 跟踪重定向
@@ -120,7 +113,6 @@ class Curl extends ClientAbstracts
 			curl_setopt($resource, CURLOPT_POST, 1);
 		}
 		curl_setopt($resource, CURLOPT_CUSTOMREQUEST, strtoupper($method));
-
 		$this->client = $resource;
 	}
 
