@@ -11,7 +11,6 @@ namespace Http\Client;
 
 use Exception;
 use Http\Message\Stream;
-use JetBrains\PhpStorm\Pure;
 use Kiri\Abstracts\Logger;
 use Kiri\Kiri;
 use Swoole\Client as SwowClient;
@@ -22,6 +21,9 @@ use Swoole\Client as SwowClient;
  */
 class AsyncClient extends ClientAbstracts
 {
+
+
+    use TSwooleClient;
 
     /**
      * @param string $method
@@ -146,31 +148,5 @@ class AsyncClient extends ClientAbstracts
     public function close(): void
     {
         $this->client->close();
-    }
-
-    /**
-     * @return array
-     */
-    #[Pure] private function settings(): array
-    {
-        $sslCert = $this->getSslCertFile();
-        $sslKey = $this->getSslKeyFile();
-        $sslCa = $this->getCa();
-
-        $params = [];
-        if ($this->getConnectTimeout() > 0) {
-            $params['timeout'] = $this->getConnectTimeout();
-        }
-        if (empty($sslCert) || empty($sslKey) || empty($sslCa)) {
-            return $params;
-        }
-
-        $params['ssl_host_name'] = $this->getHost();
-        $params['ssl_cert_file'] = $this->getSslCertFile();
-        $params['ssl_key_file'] = $this->getSslKeyFile();
-        $params['ssl_verify_peer'] = TRUE;
-        $params['ssl_cafile'] = $sslCa;
-
-        return $params;
     }
 }
