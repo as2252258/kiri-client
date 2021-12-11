@@ -98,7 +98,7 @@ class AsyncClient extends ClientAbstracts
         }
         $array = implode("\r\n", $array) . "
         
-        ";
+";
         $this->client->send($array . $this->getData()->getContents());
 
         var_dump($array . $this->getData()->getContents());
