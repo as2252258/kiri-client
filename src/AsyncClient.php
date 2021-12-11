@@ -77,13 +77,16 @@ class AsyncClient extends ClientAbstracts
      * @param $host
      * @param $isHttps
      * @param $path
+     * @throws Exception
      */
     private function generate_client($data, $host, $isHttps, $path): void
     {
+        $this->client = new SwowClient(SWOOLE_TCP, TRUE);
         if ($isHttps || $this->isSSL()) {
-            $this->client = new SwowClient($host, 443, TRUE);
-        } else {
-            $this->client = new SwowClient($host, $this->getPort(), FALSE);
+            $this->client->enableSSL();
+        }
+        if (!$this->client->connect($host, $this->getPort())) {
+            throw new Exception('链接失败');
         }
         $this->client->set($this->settings());
         if (!empty($this->getAgent())) {
