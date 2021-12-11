@@ -87,13 +87,11 @@ class AsyncClient extends ClientAbstracts
         $this->client->set($this->settings());
         if (!empty($this->getAgent())) {
             $this->withAddedHeader('User-Agent', $this->getAgent());
-        } else {
-            $this->withAddedHeader('User-Agent', ' Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.93 Safari/537.36');
         }
 
         $path = $this->setParams($path, $data);
 
-        $this->withAddedHeader('Accept', ' text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9');
+        $this->withAddedHeader('Accept', ' text/html,application/xhtml+xml,application/json,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9');
         $this->withAddedHeader('Accept-Encoding', 'gzip, deflate');
         $this->withAddedHeader('Content-Length', $this->getData()->getSize());
 
