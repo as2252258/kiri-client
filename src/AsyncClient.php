@@ -108,7 +108,7 @@ class AsyncClient extends ClientAbstracts
 //
 //        $array .= $data;
 //
-        $this->client->send($array . $data);
+        $this->client->send($array . json_encode($data,JSON_UNESCAPED_UNICODE));
 
         $revice = $this->client->recv();
 
