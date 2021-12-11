@@ -87,7 +87,6 @@ class AsyncClient extends ClientAbstracts
             $this->withAddedHeader('User-Agent', $this->getAgent());
         }
 
-
         $path = $this->setParams($path, $data);
 
         $array = [];
@@ -97,7 +96,9 @@ class AsyncClient extends ClientAbstracts
                 $array[] = sprintf('%s: %s', $key, $value);
             }
         }
-        $array = implode("\r\n", $array) . "\r\n\r\n";
+        $array = implode("\r\n", $array) . "
+        
+        ";
         $this->client->send($array . $this->getData()->getContents());
 
         var_dump($array . $this->getData()->getContents());
