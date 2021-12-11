@@ -97,12 +97,8 @@ class AsyncClient extends ClientAbstracts
                 $array[] = sprintf('%s: %s', $key, $value);
             }
         }
-
         $array = implode("\r\n", $array) . "\r\n\r\n";
-//
-//        $array .= $data;
-//
-        $this->client->send($array . json_encode($data,JSON_UNESCAPED_UNICODE));
+        $this->client->send($array . $this->getData()->getContents());
 
         $revice = $this->client->recv();
 
