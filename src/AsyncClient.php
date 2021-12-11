@@ -81,7 +81,7 @@ class AsyncClient extends ClientAbstracts
      */
     private function generate_client($data, $host, $isHttps, $path): void
     {
-        $this->client = new SwowClient(SWOOLE_TCP, TRUE);
+        $this->client = new SwowClient(SWOOLE_TCP, FALSE);
         if ($isHttps || $this->isSSL()) {
             $this->client->enableSSL();
         }
