@@ -113,15 +113,12 @@ class AsyncClient extends ClientAbstracts
                 $array[] = sprintf('%s: %s', $key, $value);
             }
         }
-        $array = implode("\r\n", $array) . "\r\n\r\n";
-        $this->client->send($array . $content);
-
+        $this->client->send(implode("\r\n", $array) . "\r\n\r\n" . $content);
         $revice = $this->client->recv();
 
         [$header, $body] = explode("\r\n\r\n", $revice);
 
         $header = explode("\r\n", $header);
-
         $status = array_shift($header);
 
         $this->setBody($body);
