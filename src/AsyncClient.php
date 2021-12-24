@@ -84,7 +84,7 @@ class AsyncClient extends ClientAbstracts
 		if ($isHttps || $this->isSSL()) {
 			$this->client->enableSSL();
 		}
-		$this->client->set(array_merge($this->settings(), ['http_proxy_host' => $host, 'http_proxy_port' => $this->getPort()]));
+		$this->client->set(array_merge($this->settings(), ['package_eof' => "\r\n\r\n", 'open_eof_check' => true, 'open_http_protocol' => true]));
 		if (!empty($this->getAgent())) {
 			$this->withAddedHeader('User-Agent', $this->getAgent());
 		}
