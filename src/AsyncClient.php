@@ -92,7 +92,7 @@ class AsyncClient extends ClientAbstracts
         $path = $this->setParams($path, $data);
 
         $this->withAddedHeader('Accept', ' text/html,application/xhtml+xml,application/json,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9');
-        $this->withAddedHeader('Accept-Encoding', 'gzip, deflate');
+        $this->withAddedHeader('Accept-Encoding', 'gzip');
         $this->withAddedHeader('Content-Length', $this->getData()->getSize());
 
         $this->execute($path, $this->getData()->getContents());
