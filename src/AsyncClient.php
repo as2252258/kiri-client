@@ -122,9 +122,7 @@ class AsyncClient extends ClientAbstracts
 		$status = array_shift($header);
 
 		$this->setStatusCode(intval(explode(' ', $status)[1]));
-		$this->setResponseHeader($header);
-
-		var_dump($this->getResponseHeaders());
+		$this->parseResponseHeaders($header);
 		if ($this->getResponseHeader('Transfer-Encoding') == 'chunked') {
 			$explode = explode("\r\n\r\n", str_replace("0\r\n\r\n", '', $body));
 
@@ -138,6 +136,22 @@ class AsyncClient extends ClientAbstracts
 		}
 		file_put_contents('php://output', $body . PHP_EOL);
 		$this->setBody($body);
+	}
+
+
+	/**
+	 * @param array $headers
+	 * @return void
+	 */
+	private function parseResponseHeaders(array $headers)
+	{
+		$array = [];
+		foreach ($headers as $header) {
+			[$key, $value] = explode(': ', $header);
+
+			$array[$key] = $value;
+		}
+		$this->setResponseHeader($array);
 	}
 
 
