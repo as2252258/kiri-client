@@ -54,7 +54,6 @@ class Curl extends ClientAbstracts
         if ($isHttps !== FALSE) {
             $this->curlHandlerSslSet();
         }
-		var_dump($this->client);
         $contents = $this->getData()->getContents();
         if (empty($params) && empty($contents)) {
             return;
