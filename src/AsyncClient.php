@@ -107,7 +107,7 @@ class AsyncClient extends ClientAbstracts
 	private function execute(string $path, string $content)
 	{
 		$array = [];
-		$array[] = strtoupper($this->getMethod()) . ' ' . $path . ' HTTP/1.1';
+		$array[] = strtoupper($this->getMethod()) . ' ' . $path . ' HTTP/1.0';
 		if (!empty($this->getHeader())) {
 			foreach ($this->getHeader() as $key => $value) {
 				$array[] = sprintf('%s: %s', $key, $value);
@@ -123,19 +123,9 @@ class AsyncClient extends ClientAbstracts
 
 		$this->setStatusCode(intval(explode(' ', $status)[1]));
 		$this->parseResponseHeaders($header);
-		if ($this->getResponseHeader('Transfer-Encoding') == 'chunked') {
-			$explode = explode("\r\n\r\n", str_replace("0\r\n\r\n", '', $body));
-
-			var_dump($explode);
-
-			$string = [];
-			foreach ($explode as $value) {
-				$string[] = explode("\r\n", $value)[1];
-			}
-			$body = implode($string);
-		}
-		file_put_contents('php://output', $body . PHP_EOL);
 		$this->setBody($body);
+
+		var_dump($body);
 	}
 
 
