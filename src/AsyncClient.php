@@ -126,6 +126,9 @@ class AsyncClient extends ClientAbstracts
 
 		if ($this->getResponseHeader('Transfer-Encoding') == 'chunked') {
 			$explode = explode("\r\n\r\n", str_replace("0\r\n\r\n", '', $body));
+
+			var_dump($explode);
+
 			$string = [];
 			foreach ($explode as $value) {
 				$string[] = explode("\r\n", $value)[1];
