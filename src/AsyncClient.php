@@ -84,7 +84,7 @@ class AsyncClient extends ClientAbstracts
 		if ($isHttps || $this->isSSL()) {
 			$this->client->enableSSL();
 		}
-		$this->client->set(array_merge($this->settings(), ['package_eof' => "\r\n\r\n", 'open_eof_check' => true]));
+		$this->client->set(array_merge($this->settings(), ['open_http_protocol' => true]));
 		if (!empty($this->getAgent())) {
 			$this->withAddedHeader('User-Agent', $this->getAgent());
 		}
@@ -107,7 +107,7 @@ class AsyncClient extends ClientAbstracts
 	private function execute(string $path, string $content)
 	{
 		$array = [];
-		$array[] = strtoupper($this->getMethod()) . ' ' . $path . ' HTTP/1.0';
+		$array[] = strtoupper($this->getMethod()) . ' ' . $path . ' HTTP/1.1';
 		if (!empty($this->getHeader())) {
 			foreach ($this->getHeader() as $key => $value) {
 				$array[] = sprintf('%s: %s', $key, $value);
