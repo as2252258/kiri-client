@@ -84,7 +84,7 @@ class AsyncClient extends ClientAbstracts
 		if ($isHttps || $this->isSSL()) {
 			$this->client->enableSSL();
 		}
-		$this->client->set($this->settings());
+		$this->client->set(array_merge($this->settings(), ['package_eof' => "\r\n\r\n", 'open_eof_check' => true]));
 		if (!empty($this->getAgent())) {
 			$this->withAddedHeader('User-Agent', $this->getAgent());
 		}
