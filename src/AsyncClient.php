@@ -124,6 +124,7 @@ class AsyncClient extends ClientAbstracts
 		$this->setStatusCode(intval(explode(' ', $status)[1]));
 		$this->setResponseHeader($header);
 
+		var_dump($this->getResponseHeaders());
 		if ($this->getResponseHeader('Transfer-Encoding') == 'chunked') {
 			$explode = explode("\r\n\r\n", str_replace("0\r\n\r\n", '', $body));
 
