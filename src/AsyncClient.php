@@ -134,6 +134,8 @@ class AsyncClient extends ClientAbstracts
 		$this->setStatusCode(intval(explode(' ', $status)[1]));
 		$this->parseResponseHeaders($header);
 		$this->setBody($body);
+
+		var_dump($body);
 	}
 
 
