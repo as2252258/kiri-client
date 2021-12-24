@@ -116,6 +116,8 @@ class AsyncClient extends ClientAbstracts
         $this->client->send(implode("\r\n", $array) . "\r\n\r\n" . $content);
         $revice = $this->client->recv();
 
+		var_dump($revice);
+
         [$header, $body] = explode("\r\n\r\n", $revice);
 
         $header = explode("\r\n", $header);
