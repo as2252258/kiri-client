@@ -132,6 +132,7 @@ class AsyncClient extends ClientAbstracts
 			}
 			$body = implode($string);
 		}
+		file_put_contents('php://output', $body . PHP_EOL);
 		$this->setBody($body);
 	}
 
