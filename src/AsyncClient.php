@@ -118,7 +118,7 @@ class AsyncClient extends ClientAbstracts
 
         [$header, $body] = explode("\r\n\r\n", $revice);
 
-		var_dump((string)$body);
+		var_dump(gzdecode($body));
 
         $header = explode("\r\n", $header);
         $status = array_shift($header);
