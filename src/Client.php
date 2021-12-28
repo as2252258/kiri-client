@@ -6,13 +6,13 @@ use Kiri\Context;
 
 
 /**
- * @mixin CoroutineClient|Curl
+ * @mixin CoroutineClient|CurlClient
  */
 class Client
 {
 
 
-	private CoroutineClient|Curl|AsyncClient $abstracts;
+	private CoroutineClient|CurlClient|AsyncClient $abstracts;
 
 
 	/**
@@ -25,7 +25,7 @@ class Client
 		if (Context::inCoroutine()) {
 			$this->abstracts = new CoroutineClient($host, $port, $isSsl);
 		} else {
-			$this->abstracts = new Curl($host, $port, $isSsl);
+			$this->abstracts = new CurlClient($host, $port, $isSsl);
 		}
 	}
 

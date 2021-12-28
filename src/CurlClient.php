@@ -12,10 +12,10 @@ use Psr\Http\Message\ResponseInterface;
 
 
 /**
- * Class Curl
+ * Class CurlClient
  * @package Http\Handler\Client
  */
-class Curl extends ClientAbstracts
+class CurlClient extends ClientAbstracts
 {
 
     /**
