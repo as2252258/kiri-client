@@ -10,8 +10,8 @@ declare(strict_types=1);
 namespace Kiri;
 
 use Exception;
-use Kiri\Message\Stream;
 use Kiri\Abstracts\Logger;
+use Kiri\Message\Stream;
 use Swoole\Client as SwowClient;
 
 /**
@@ -172,6 +172,9 @@ class AsyncClient extends ClientAbstracts
 	 */
 	public function close(): void
 	{
+		if (!$this->client->connected) {
+			return;
+		}
 		$this->client->close();
 	}
 }
