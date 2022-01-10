@@ -81,9 +81,7 @@ class AsyncClient extends ClientAbstracts
 		if (!$this->client->connect($host, $this->getPort())) {
 			throw new Exception('链接失败');
 		}
-		if ($isHttps || $this->isSSL()) {
-			$this->client->enableSSL();
-		}
+		if ($isHttps || $this->isSSL()) $this->client->enableSSL();
 		if (!empty($this->getAgent())) {
 			$this->withAddedHeader('User-Agent', $this->getAgent());
 		}
@@ -91,7 +89,7 @@ class AsyncClient extends ClientAbstracts
 		$path = $this->setParams($path, $data);
 
 		$this->withAddedHeader('Accept', ' text/html,application/xhtml+xml,application/json,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9');
-//        $this->withAddedHeader('Accept-Encoding', 'gzip');
+        $this->withAddedHeader('Accept-Encoding', 'gzip');
 		$this->withAddedHeader('Content-Length', $this->getData()->getSize());
 
 		$this->execute($path, $this->getData()->getContents());
