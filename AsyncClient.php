@@ -172,7 +172,7 @@ class AsyncClient extends ClientAbstracts
 	 */
 	public function close(): void
 	{
-		if (!$this->client->connected) {
+		if (!$this->client || !$this->client->connected) {
 			return;
 		}
 		$this->client->close();
