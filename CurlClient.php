@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Http\Client;
+namespace Kiri;
 
 
 use Exception;
-use Http\Message\Response;
-use Http\Message\Stream;
+use Kiri\Message\Response;
+use Kiri\Message\Stream;
 use JetBrains\PhpStorm\Pure;
 use Psr\Http\Message\ResponseInterface;
 

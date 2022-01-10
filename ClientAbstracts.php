@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Http\Client;
+namespace Kiri;
 
 
 use Closure;
-use Http\Message\Stream;
+use Kiri\Message\Stream;
 use JetBrains\PhpStorm\Pure;
 use Kiri\Context;
 use Kiri\Core\Help;

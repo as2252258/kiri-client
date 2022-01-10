@@ -1,6 +1,6 @@
 <?php
 
-namespace Http\Client;
+namespace Kiri;
 
 use JetBrains\PhpStorm\Pure;
 

@@ -7,12 +7,11 @@
  */
 declare(strict_types=1);
 
-namespace Http\Client;
+namespace Kiri;
 
 use Exception;
-use Http\Message\Stream;
+use Kiri\Message\Stream;
 use Kiri\Abstracts\Logger;
-use Kiri\Kiri;
 use Swoole\Client as SwowClient;
 
 /**

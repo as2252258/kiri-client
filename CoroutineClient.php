@@ -7,7 +7,7 @@
  */
 declare(strict_types=1);
 
-namespace Http\Client;
+namespace Kiri;
 
 use Exception;
 use JetBrains\PhpStorm\Pure;

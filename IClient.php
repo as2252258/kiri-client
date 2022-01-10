@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Http\Client;
+namespace Kiri;
 
 
 use Closure;
