@@ -147,7 +147,7 @@ class AsyncClient extends ClientAbstracts
 	 * @param $string
 	 * @return mixed
 	 */
-	private function waite($client, $string): mixed
+	private function waite(&$client, $string): mixed
 	{
 		$tmp = $client->recv();
 		if (!empty($tmp)) {
