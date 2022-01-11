@@ -49,8 +49,9 @@ class CurlClient extends ClientAbstracts
         $host = $isHttps ? 'https://' . $host : 'http://' . $host;
         if ($this->getPort() != 443 && $this->getPort() != 80) {
             $host .= ':' . $this->getPort();
+
+			var_dump($this->getPort());
         }
-		var_dump($host . $path);
         $this->do(curl_init($host . $path), $host . $path, $method);
         if ($isHttps !== FALSE) {
             $this->curlHandlerSslSet();
