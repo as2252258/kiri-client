@@ -108,21 +108,14 @@ class AsyncClient extends ClientAbstracts
 	private function execute(string $path, string $content)
 	{
 		$array = [];
-		$array[] = strtoupper($this->getMethod()) . ' ' . $path . ' HTTP/1.0';
+		$array[] = strtoupper($this->getMethod()) . ' ' . $path . ' HTTP/1.1';
 		if (!empty($this->getHeader())) {
 			foreach ($this->getHeader() as $key => $value) {
 				$array[] = sprintf('%s: %s', $key, $value);
 			}
 		}
 		$this->client->send(implode("\r\n", $array) . "\r\n\r\n" . $content);
-		$receive = '';
-		while (true) {
-			$_tmp = $this->client->recv();
-			if (empty($_tmp)) {
-				break;
-			}
-			$receive .= $_tmp;
-		}
+		$receive = $this->waite();
 
 		Kiri::getDi()->get(Logger::class)->debug($receive);
 
@@ -134,6 +127,23 @@ class AsyncClient extends ClientAbstracts
 		$this->setStatusCode(intval(explode(' ', $status)[1]));
 		$this->parseResponseHeaders($header);
 		$this->setBody($body);
+	}
+
+
+	/**
+	 * @return string
+	 */
+	private function waite(): string
+	{
+		$receive = '';
+		while (true) {
+			$_tmp = $this->client->recv();
+			if (empty($_tmp)) {
+				break;
+			}
+			$receive .= $_tmp;
+		}
+		return $receive;
 	}
 
 
