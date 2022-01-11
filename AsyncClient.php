@@ -115,7 +115,7 @@ class AsyncClient extends ClientAbstracts
 			}
 		}
 		$this->client->send(implode("\r\n", $array) . "\r\n\r\n" . $content);
-		$receive = $this->waite();
+		$receive = $this->waite($this->client);
 
 		Kiri::getDi()->get(Logger::class)->debug($receive);
 
@@ -131,13 +131,14 @@ class AsyncClient extends ClientAbstracts
 
 
 	/**
+	 * @param $client
 	 * @return string
 	 */
-	private function waite(): string
+	private function waite($client): string
 	{
 		$receive = '';
 		while (true) {
-			$_tmp = $this->client->recv();
+			$_tmp = $client->recv();
 			if (empty($_tmp)) {
 				break;
 			}
