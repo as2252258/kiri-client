@@ -11,6 +11,7 @@ namespace Kiri;
 
 use Exception;
 use Kiri\Abstracts\Logger;
+use Kiri\Exception\ConfigException;
 use Kiri\Message\Stream;
 use Swoole\Client as SwowClient;
 
@@ -102,6 +103,7 @@ class AsyncClient extends ClientAbstracts
 	 * @param string $path
 	 * @param string $content
 	 * @return void
+	 * @throws ConfigException
 	 */
 	private function execute(string $path, string $content)
 	{
