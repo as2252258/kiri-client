@@ -67,7 +67,7 @@ class CoroutineClient extends ClientAbstracts
 			$this->setBody($this->client->getBody());
 			$this->setResponseHeader($this->client->headers);
 		} catch (\Throwable $exception) {
-			Kiri::getDi()->get(Logger::class)->error('rpc', [$exception]);
+			Kiri::getDi()->get(Logger::class)->error('rpc', [error_trigger_format($exception)]);
 			$this->setStatusCode(-1);
 			$this->setBody(jTraceEx($exception));
 		}

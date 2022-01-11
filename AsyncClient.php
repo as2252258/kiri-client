@@ -62,7 +62,7 @@ class AsyncClient extends ClientAbstracts
 		try {
 			$this->generate_client($data, ...$url);
 		} catch (\Throwable $exception) {
-			Kiri::getDi()->get(Logger::class)->error('rpc', [$exception]);
+			Kiri::getDi()->get(Logger::class)->error('rpc', [error_trigger_format($exception)]);
 			$this->setStatusCode(-1);
 			$this->setBody(jTraceEx($exception));
 		}
