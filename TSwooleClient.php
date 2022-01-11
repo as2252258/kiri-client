@@ -18,9 +18,8 @@ trait TSwooleClient
 		$sslCa = $this->getCa();
 
 		$params = [
-			'open_eof_check'     => true,
-			'package_eof'        => "\r\n\r\n",
-			'package_max_length' => 1024 * 1024 * 2,
+			'open_eof_check' => true,
+			'package_eof'    => "\r\n\r\n"
 		];
 		if ($this->getConnectTimeout() > 0) {
 			$params['timeout'] = $this->getConnectTimeout();
