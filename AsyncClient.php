@@ -79,7 +79,7 @@ class AsyncClient extends ClientAbstracts
 	private function generate_client($data, $host, $isHttps, $path): void
 	{
 		$this->client = new SwowClient(SWOOLE_TCP, FALSE);
-		$this->client->set(array_merge($this->settings()));
+		$this->client->set(array_merge($this->settings(), ['open_http_protocol' => true]));
 		if (!$this->client->connect($host, $this->getPort())) {
 			throw new Exception('链接失败');
 		}
