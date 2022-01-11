@@ -135,7 +135,8 @@ class AsyncClient extends ClientAbstracts
 		$array = [];
 		$array[] = strtoupper($this->getMethod()) . ' ' . $path . ' HTTP/1.1';
 		if (!empty($this->getHeader())) {
-			foreach ($this->getHeader() as $key => $value) {
+			$headers = $this->getHeader();
+			foreach ($headers as $key => $value) {
 				$array[] = sprintf('%s: %s', $key, $value);
 			}
 		}
