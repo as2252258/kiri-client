@@ -108,26 +108,25 @@ class AsyncClient extends ClientAbstracts
 	{
 		$array = $this->_parseHeaders($path);
 
-		if ($this->client->send(implode("\r\n", $array) . "\r\n\r\n" . $content)) {
-			$receive = '';
-			while (true) {
-				$tmp = $this->client->recv();
-				if (empty($tmp)) {
-					break;
-				}
-				$receive .= $tmp;
+		$this->client->send(implode("\r\n", $array) . "\r\n\r\n" . $content);
+		$receive = '';
+		while (true) {
+			$tmp = $this->client->recv();
+			if (empty($tmp)) {
+				break;
 			}
-
-			Kiri::getDi()->get(Logger::class)->debug($receive);
-			[$header, $body] = explode("\r\n\r\n", $receive);
-
-			$header = explode("\r\n", $header);
-			$status = array_shift($header);
-
-			$this->setStatusCode(intval(explode(' ', $status)[1]));
-			$this->parseResponseHeaders($header);
-			$this->setBody($body);
+			$receive .= $tmp;
 		}
+
+		Kiri::getDi()->get(Logger::class)->debug($receive);
+		[$header, $body] = explode("\r\n\r\n", $receive);
+
+		$header = explode("\r\n", $header);
+		$status = array_shift($header);
+
+		$this->setStatusCode(intval(explode(' ', $status)[1]));
+		$this->parseResponseHeaders($header);
+		$this->setBody($body);
 	}
 
 
