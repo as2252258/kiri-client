@@ -118,7 +118,7 @@ class AsyncClient extends ClientAbstracts
 		$receive = '';
 		while (true) {
 			$_tmp = $this->client->recv();
-			if (empty($receive)) {
+			if (empty($_tmp)) {
 				break;
 			}
 			$receive .= $_tmp;
