@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Kiri;
 
 use Exception;
+use JetBrains\PhpStorm\Pure;
 use Kiri\Abstracts\Logger;
 use Kiri\Exception\ConfigException;
 use Kiri\Message\Stream;
@@ -107,22 +108,10 @@ class AsyncClient extends ClientAbstracts
 	 */
 	private function execute(string $path, string $content)
 	{
-		$array = [];
-		$array[] = strtoupper($this->getMethod()) . ' ' . $path . ' HTTP/1.1';
-		if (!empty($this->getHeader())) {
-			foreach ($this->getHeader() as $key => $value) {
-				$array[] = sprintf('%s: %s', $key, $value);
-			}
-		}
+		$array = $this->_parseHeaders($path);
+
 		$this->client->send(implode("\r\n", $array) . "\r\n\r\n" . $content);
-		$receive = '';
-		while (true) {
-			$_tmp = $this->client->recv();
-			if (empty($_tmp)) {
-				break;
-			}
-			$receive .= $_tmp;
-		}
+		$receive = $this->waite('');
 
 		Kiri::getDi()->get(Logger::class)->debug($receive);
 
@@ -134,6 +123,38 @@ class AsyncClient extends ClientAbstracts
 		$this->setStatusCode(intval(explode(' ', $status)[1]));
 		$this->parseResponseHeaders($header);
 		$this->setBody($body);
+	}
+
+
+	/**
+	 * @param string $path
+	 * @return array
+	 */
+	#[Pure] private function _parseHeaders(string $path): array
+	{
+		$array = [];
+		$array[] = strtoupper($this->getMethod()) . ' ' . $path . ' HTTP/1.1';
+		if (!empty($this->getHeader())) {
+			foreach ($this->getHeader() as $key => $value) {
+				$array[] = sprintf('%s: %s', $key, $value);
+			}
+		}
+		return $array;
+	}
+
+
+	/**
+	 * @param $string
+	 * @return mixed
+	 */
+	private function waite($string): mixed
+	{
+		$tmp = $this->client->recv();
+		if (empty($tmp)) {
+			return $string;
+		}
+		$string .= $tmp;
+		return $this->waite($string);
 	}
 
 
