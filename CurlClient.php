@@ -45,12 +45,11 @@ class CurlClient extends ClientAbstracts
     private function getCurlHandler($path, $method, $params): void
     {
         [$host, $isHttps, $path] = $this->matchHost($path);
+		var_dump($host, $isHttps, $path);
 
         $host = $isHttps ? 'https://' . $host : 'http://' . $host;
         if ($this->getPort() != 443 && $this->getPort() != 80) {
             $host .= ':' . $this->getPort();
-
-			var_dump($this->getPort());
         }
         $this->do(curl_init($host . $path), $host . $path, $method);
         if ($isHttps !== FALSE) {
