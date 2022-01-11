@@ -110,7 +110,11 @@ class AsyncClient extends ClientAbstracts
 
 		if ($this->client->send(implode("\r\n", $array) . "\r\n\r\n" . $content)) {
 			$receive = '';
-			while ($tmp = $this->client->recv()) {
+			while (true) {
+				$tmp = $this->client->recv();
+				if (empty($tmp)) {
+					break;
+				}
 				$receive .= $tmp;
 			}
 
