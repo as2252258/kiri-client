@@ -12,12 +12,12 @@ namespace Kiri;
 use Exception;
 use JetBrains\PhpStorm\Pure;
 use Kiri\Abstracts\Logger;
-use Kiri\Kiri;
+use Kiri;
 use Swoole\Coroutine\Http\Client as SwowClient;
 
 /**
  * Class Client
- * @package Kiri\Kiri\Http
+ * @package Kiri\Http
  */
 class CoroutineClient extends ClientAbstracts
 {

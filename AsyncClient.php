@@ -18,7 +18,7 @@ use Swoole\Client as SwowClient;
 
 /**
  * Class Client
- * @package Kiri\Kiri\Http
+ * @package Kiri\Http
  */
 class AsyncClient extends ClientAbstracts
 {
