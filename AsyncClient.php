@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Kiri;
 
 use Exception;
+use Kiri;
 use JetBrains\PhpStorm\Pure;
 use Kiri\Abstracts\Logger;
 use Kiri\Exception\ConfigException;
@@ -102,7 +103,6 @@ class AsyncClient extends ClientAbstracts
 	 * @param string $path
 	 * @param string $content
 	 * @return void
-	 * @throws ConfigException
 	 */
 	private function execute(string $path, string $content)
 	{
@@ -118,8 +118,6 @@ class AsyncClient extends ClientAbstracts
 			$receive .= $_tmp;
 		}
 
-		Kiri::getDi()->get(Logger::class)->debug(implode("\r\n", $array) . "\r\n\r\n" . $content);
-		Kiri::getDi()->get(Logger::class)->debug($receive);
 		[$header, $body] = explode("\r\n\r\n", $receive);
 
 		$header = explode("\r\n", $header);
