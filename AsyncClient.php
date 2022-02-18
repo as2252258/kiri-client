@@ -147,6 +147,7 @@ class AsyncClient extends ClientAbstracts
 	}
 
 
+
 	/**
 	 * @param $client
 	 * @param $string
