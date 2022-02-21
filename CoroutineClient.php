@@ -10,9 +10,8 @@ declare(strict_types=1);
 namespace Kiri;
 
 use Exception;
-use JetBrains\PhpStorm\Pure;
-use Kiri\Abstracts\Logger;
 use Kiri;
+use Kiri\Abstracts\Logger;
 use Swoole\Coroutine\Http\Client as SwowClient;
 
 /**
@@ -22,7 +21,7 @@ use Swoole\Coroutine\Http\Client as SwowClient;
 class CoroutineClient extends ClientAbstracts
 {
 
-    use TSwooleClient;
+	use TSwooleClient;
 
 	/**
 	 * @param string $method
@@ -33,6 +32,9 @@ class CoroutineClient extends ClientAbstracts
 	 */
 	public function request(string $method, $path, array $params = []): void
 	{
+		if (!str_starts_with($path, '/')) {
+			$path = '/' . $path;
+		}
 		$this->withMethod($method)
 			->coroutine(
 				$this->matchHost($path),
@@ -41,15 +43,14 @@ class CoroutineClient extends ClientAbstracts
 	}
 
 
-
-    /**
-     * @param $path
-     * @return $this
-     */
-    public function withCAInfo($path): static
-    {
-        return $this;
-    }
+	/**
+	 * @param $path
+	 * @return $this
+	 */
+	public function withCAInfo($path): static
+	{
+		return $this;
+	}
 
 	/**
 	 * @param $url
