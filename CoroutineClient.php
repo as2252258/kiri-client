@@ -88,6 +88,7 @@ class CoroutineClient extends ClientAbstracts
 		} else {
 			$this->client = new SwowClient($host, $this->getPort(), false);
 		}
+		var_dump($host, $this->getPort());
 		$this->client->set($this->settings());
 		if (!empty($this->getAgent())) {
 			$this->withAddedHeader('User-Agent', $this->getAgent());
