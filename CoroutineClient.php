@@ -60,7 +60,6 @@ class CoroutineClient extends ClientAbstracts
 	private function coroutine($url, array|string $data = []): void
 	{
 		try {
-			var_dump($url, $this->getPort());
 			$this->generate_client($data, ...$url);
 			if ($this->client->statusCode < 0) {
 				throw new Exception($this->client->errMsg);
