@@ -60,6 +60,7 @@ class CoroutineClient extends ClientAbstracts
 	private function coroutine($url, array|string $data = []): void
 	{
 		try {
+			var_dump($url, $this->getPort());
 			$this->generate_client($data, ...$url);
 			if ($this->client->statusCode < 0) {
 				throw new Exception($this->client->errMsg);
@@ -88,7 +89,6 @@ class CoroutineClient extends ClientAbstracts
 		} else {
 			$this->client = new SwowClient($host, $this->getPort(), false);
 		}
-		var_dump($host, $this->getPort());
 		$this->client->set($this->settings());
 		if (!empty($this->getAgent())) {
 			$this->withAddedHeader('User-Agent', $this->getAgent());
