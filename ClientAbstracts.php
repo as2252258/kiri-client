@@ -53,9 +53,9 @@ abstract class ClientAbstracts implements IClient
 	private int $statusCode = 200;
 
 
-	protected int $retryNum = 3;
+	protected int $retryNum = 0;
 
-	protected int $retryTimeout = 3;
+	protected int $retryTimeout = 0;
 
 
 	private bool $VERIFYPEER = TRUE;
