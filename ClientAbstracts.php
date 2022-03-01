@@ -53,6 +53,11 @@ abstract class ClientAbstracts implements IClient
 	private int $statusCode = 200;
 
 
+	protected int $retryNum = 3;
+
+	protected int $retryTimeout = 3;
+
+
 	private bool $VERIFYPEER = TRUE;
 
 
@@ -71,6 +76,46 @@ abstract class ClientAbstracts implements IClient
 	 * @var resource|\Swoole\Coroutine\Http\Client|\Swoole\Client|\CurlHandle
 	 */
 	protected mixed $client;
+
+
+	/**
+	 * @param int $retryNum
+	 * @return $this
+	 */
+	public function withRetryNum(int $retryNum): static
+	{
+		$this->retryNum = $retryNum;
+		return $this;
+	}
+
+
+	/**
+	 * @param int $retryTimeout
+	 * @return $this
+	 */
+	public function withRetryTimeout(int $retryTimeout): static
+	{
+		$this->retryTimeout = $retryTimeout;
+		return $this;
+	}
+
+
+	/**
+	 * @return int
+	 */
+	public function getRetryNum(): int
+	{
+		return $this->retryNum;
+	}
+
+
+	/**
+	 * @return int
+	 */
+	public function getRetryTimeout(): int
+	{
+		return $this->retryTimeout;
+	}
 
 
 	/**

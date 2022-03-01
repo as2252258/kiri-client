@@ -37,7 +37,7 @@ class CoroutineClient extends ClientAbstracts
 		}
 		$this->withMethod($method)
 			->coroutine(
-				$this->matchHost($path),
+				$path,
 				$this->paramEncode($params)
 			);
 	}
@@ -60,13 +60,13 @@ class CoroutineClient extends ClientAbstracts
 	private function coroutine($url, array|string $data = []): void
 	{
 		try {
-			$this->generate_client($data, ...$url);
+			$this->generate_client($this->getHost(), $this->isSSL());
 			if ($this->client->statusCode < 0) {
 				throw new Exception($this->client->errMsg);
 			}
-			$this->setStatusCode($this->client->getStatusCode());
-			$this->setBody($this->client->getBody());
-			$this->setResponseHeader($this->client->headers);
+
+			$this->execute($url, $data);
+
 		} catch (\Throwable $exception) {
 			Kiri::getDi()->get(Logger::class)->error('rpc', [error_trigger_format($exception)]);
 			$this->setStatusCode(-1);
@@ -76,12 +76,47 @@ class CoroutineClient extends ClientAbstracts
 
 
 	/**
+	 * @param $path
 	 * @param $data
+	 * @return void
+	 * @throws Exception
+	 */
+	private function execute($path, $data)
+	{
+		$this->client->execute($this->setParams($path, $data));
+		if (in_array($this->client->getStatusCode(), [502, 404])) {
+			$this->retry($path, $data);
+		} else {
+			$this->setStatusCode($this->client->getStatusCode());
+			$this->setBody($this->client->getBody());
+			$this->setResponseHeader($this->client->headers);
+		}
+	}
+
+
+	/**
+	 * @return void
+	 * @throws Exception
+	 */
+	private function retry($path, $data)
+	{
+		if (Context::increment('retry') <= $this->retryNum) {
+			sleep($this->retryTimeout);
+
+			$this->execute($path, $data);
+		} else {
+			Context::remove('retry');
+
+			$this->setStatusCode(curl_errno($this->client));
+			$this->setBody(curl_error($this->client));
+		}
+	}
+
+	/**
 	 * @param $host
 	 * @param $isHttps
-	 * @param $path
 	 */
-	private function generate_client($data, $host, $isHttps, $path): void
+	private function generate_client($host, $isHttps): void
 	{
 		if ($isHttps || $this->isSSL()) {
 			$this->client = new SwowClient($host, 443, true);
@@ -94,7 +129,6 @@ class CoroutineClient extends ClientAbstracts
 		}
 		$this->client->setHeaders($this->getHeader());
 		$this->client->setMethod(strtoupper($this->getMethod()));
-		$this->client->execute($this->setParams($path, $data));
 	}
 
 

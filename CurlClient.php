@@ -138,11 +138,30 @@ class CurlClient extends ClientAbstracts
 	private function execute(): void
 	{
 		$output = curl_exec($this->client);
-		if ($output === FALSE) {
+		if ($output !== FALSE) {
+			$this->explode($output);
+		} else {
 			$this->setStatusCode(curl_errno($this->client));
 			$this->setBody(curl_error($this->client));
+		}
+	}
+
+
+	/**
+	 * @return void
+	 * @throws Exception
+	 */
+	private function retry()
+	{
+		if (Context::increment('retry') <= $this->retryNum) {
+			sleep($this->retryTimeout);
+
+			$this->execute();
 		} else {
-			$this->explode($output);
+			Context::remove('retry');
+
+			$this->setStatusCode(curl_errno($this->client));
+			$this->setBody(curl_error($this->client));
 		}
 	}
 
@@ -171,9 +190,14 @@ class CurlClient extends ClientAbstracts
 		$header = explode("\r\n", $header);
 		$status = explode(' ', array_shift($header));
 
-		$this->setStatusCode(intval($status[1]));
-		$this->setBody($body);
-		$this->setResponseHeader($header);
+		$statusCode = intval($status[1]);
+		if (in_array($statusCode, [502, 404])) {
+			$this->retry();
+		} else {
+			$this->setStatusCode($statusCode);
+			$this->setBody($body);
+			$this->setResponseHeader($header);
+		}
 	}
 
 	/**
