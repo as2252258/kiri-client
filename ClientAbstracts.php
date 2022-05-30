@@ -47,7 +47,7 @@ abstract class ClientAbstracts implements IClient
 	private int $port = 80;
 
 
-	private array $_responseHeader = [];
+	private ?array $_responseHeader = [];
 
 
 	private int $statusCode = 200;
@@ -58,7 +58,7 @@ abstract class ClientAbstracts implements IClient
 	protected int $retryTimeout = 0;
 
 
-	private bool $VERIFYPEER = TRUE;
+	private bool $verifyPeer = TRUE;
 
 
 	/**
@@ -124,7 +124,7 @@ abstract class ClientAbstracts implements IClient
 	 */
 	public function withVerifyPeer($bool): static
 	{
-		$this->VERIFYPEER = $bool;
+		$this->verifyPeer = $bool;
 		return $this;
 	}
 
@@ -134,7 +134,7 @@ abstract class ClientAbstracts implements IClient
 	 */
 	public function getVerifyPeer(): bool
 	{
-		return $this->VERIFYPEER;
+		return $this->verifyPeer;
 	}
 
 
@@ -167,9 +167,9 @@ abstract class ClientAbstracts implements IClient
 
 
 	/**
-	 * @param array $responseHeader
+	 * @param null|array $responseHeader
 	 */
-	public function setResponseHeader(array $responseHeader): void
+	public function setResponseHeader(?array $responseHeader): void
 	{
 		$this->_responseHeader = $responseHeader;
 	}
