@@ -87,7 +87,6 @@ class CoroutineClient extends ClientAbstracts
         $this->client->execute($this->setParams($path, $data));
         if ($this->client->statusCode < 1) {
             $logger = Kiri::getDi()->get(LoggerInterface::class);
-
             $errMsg = sprintf("%s://%s:%s/%s -> error: %s", $this->isSSL() ? "https" : "http",
                 $this->getHost(), $this->getPort(), $path, $this->client->errMsg);
 
