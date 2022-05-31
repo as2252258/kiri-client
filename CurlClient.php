@@ -151,8 +151,8 @@ class CurlClient extends ClientAbstracts
 	 * @return void
 	 * @throws Exception
 	 */
-	private function retry()
-	{
+	private function retry(): void
+    {
 		if (Context::increment('retry') <= $this->retryNum) {
 			sleep($this->retryTimeout);
 
