@@ -121,8 +121,8 @@ class CoroutineClient extends ClientAbstracts
         } else {
             Context::remove('retry');
 
-            $this->setStatusCode(curl_errno($this->client));
-            $this->setBody(curl_error($this->client));
+            $this->setStatusCode($this->client->statusCode);
+            $this->setBody($this->client->errMsg);
         }
     }
 
