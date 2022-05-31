@@ -90,7 +90,9 @@ class CoroutineClient extends ClientAbstracts
             $errMsg = sprintf("%s://%s:%s/%s -> error: %s", $this->isSSL() ? "https" : "http",
                 $this->getHost(), $this->getPort(), $path, $this->client->errMsg);
 
-            $errMsg .= print_r($data, true);
+            if (!empty($data)) {
+                $errMsg .= print_r($data, true);
+            }
 
             $logger->error($errMsg);
         }
