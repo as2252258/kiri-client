@@ -2,7 +2,7 @@
 
 namespace Kiri;
 
-use Kiri\Context;
+use Swoole\Coroutine;
 
 
 /**
@@ -12,7 +12,7 @@ class Client
 {
 
 
-	private CoroutineClient|CurlClient|AsyncClient $abstracts;
+	private CoroutineClient|CurlClient $abstracts;
 
 
 	/**
@@ -22,7 +22,7 @@ class Client
 	 */
 	public function __construct(string $host, int $port, bool $isSsl = false)
 	{
-		if (Context::inCoroutine()) {
+		if (class_exists(Coroutine::class) && Coroutine::getCid() > -1) {
 			$this->abstracts = new CoroutineClient($host, $port, $isSsl);
 		} else {
 			$this->abstracts = new CurlClient($host, $port, $isSsl);
