@@ -8,6 +8,7 @@ use Closure;
 use Exception;
 use JetBrains\PhpStorm\Pure;
 use Kiri\Core\Help;
+use Kiri\Di\Context;
 use Kiri\Message\Stream;
 use Psr\Http\Message\StreamInterface;
 use Swoole\Coroutine\System;

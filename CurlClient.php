@@ -6,6 +6,7 @@ namespace Kiri;
 
 use Exception;
 use JetBrains\PhpStorm\Pure;
+use Kiri\Di\Context;
 
 
 /**

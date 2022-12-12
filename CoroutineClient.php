@@ -12,6 +12,7 @@ namespace Kiri;
 use Exception;
 use Kiri;
 use Kiri\Abstracts\Logger;
+use Kiri\Di\Context;
 use Psr\Log\LoggerInterface;
 use Swoole\Coroutine\Http\Client as SwowClient;
 
