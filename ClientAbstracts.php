@@ -9,7 +9,7 @@ use Exception;
 use JetBrains\PhpStorm\Pure;
 use Kiri\Core\Help;
 use Kiri\Di\Context;
-use Kiri\Message\Stream;
+use Kiri\Router\Constrict\Stream;
 use Psr\Http\Message\StreamInterface;
 use Swoole\Coroutine\System;
 
