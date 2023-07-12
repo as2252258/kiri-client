@@ -11,9 +11,7 @@
   "require": {
     "php": ">=8.0",
     "ext-json": "*",
-    "ext-swoole": "*",
-    "psr/http-client": "^1.0",
-    "psr/http-message": "^1.0"
+    "ext-swoole": "*"
   },
   "autoload": {
     "psr-4": {

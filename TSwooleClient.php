@@ -2,8 +2,6 @@
 
 namespace Kiri;
 
-use JetBrains\PhpStorm\Pure;
-
 trait TSwooleClient
 {
 
@@ -11,7 +9,7 @@ trait TSwooleClient
 	/**
 	 * @return array
 	 */
-	#[Pure] private function settings(): array
+	private function settings(): array
 	{
 		$sslCert = $this->getSslCertFile();
 		$sslKey = $this->getSslKeyFile();

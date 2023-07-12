@@ -5,25 +5,23 @@ namespace Kiri;
 
 
 use Closure;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\StreamInterface;
 
 interface IClient
 {
 
 
-	/**
-	 * @param string $path
-	 * @param array $params
-	 */
-	public function get(string $path, array $params = []): void;
+    /**
+     * @param string $path
+     * @param array|string $params
+     */
+	public function get(string $path, array|string $params = []): void;
 
 
-	/**
-	 * @param string $path
-	 * @param array $params
-	 */
-	public function post(string $path, array $params = []): void;
+    /**
+     * @param string $path
+     * @param array|string $params
+     */
+	public function post(string $path, array|string $params = []): void;
 
 
 	/**
@@ -32,47 +30,47 @@ interface IClient
 	public function close(): void;
 
 
-	/**
-	 * @param string $path
-	 * @param array $params
-	 */
-	public function delete(string $path, array $params = []): void;
+    /**
+     * @param string $path
+     * @param array|string $params
+     */
+	public function delete(string $path, array|string $params = []): void;
 
 
-	/**
-	 * @param string $path
-	 * @param array $params
-	 */
-	public function options(string $path, array $params = []): void;
+    /**
+     * @param string $path
+     * @param array|string $params
+     */
+	public function options(string $path, array|string $params = []): void;
 
 
-	/**
-	 * @param string $path
-	 * @param array $params
-	 */
-	public function upload(string $path, array $params = []): void;
+    /**
+     * @param string $path
+     * @param array|string $params
+     */
+	public function upload(string $path, array|string $params = []): void;
 
 
-	/**
-	 * @param string $path
-	 * @param array $params
-	 */
-	public function put(string $path, array $params = []): void;
+    /**
+     * @param string $path
+     * @param array|string $params
+     */
+	public function put(string $path, array|string $params = []): void;
 
 
-	/**
-	 * @param string $path
-	 * @param array $params
-	 */
-	public function head(string $path, array $params = []): void;
+    /**
+     * @param string $path
+     * @param array|string $params
+     */
+	public function head(string $path, array|string $params = []): void;
 
 
 	/**
 	 * @param string $method
 	 * @param string $path
-	 * @param array $params
+	 * @param array|string $params
 	 */
-	public function request(string $method, string $path, array $params = []): void;
+	public function request(string $method, string $path, array|string $params = []): void;
 
 
 	/**
@@ -154,10 +152,10 @@ interface IClient
 
 
 	/**
-	 * @param string|StreamInterface $data
+	 * @param string $data
 	 * @return static
 	 */
-	public function withBody(string|StreamInterface $data): static;
+	public function withBody(string $data): static;
 
 
 	/**

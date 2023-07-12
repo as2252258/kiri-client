@@ -10,10 +10,6 @@ declare(strict_types=1);
 namespace Kiri;
 
 use Exception;
-use Kiri;
-use Kiri\Abstracts\Logger;
-use Kiri\Di\Context;
-use Psr\Log\LoggerInterface;
 use Swoole\Coroutine\Http\Client as SwowClient;
 
 /**
@@ -28,11 +24,11 @@ class CoroutineClient extends ClientAbstracts
     /**
      * @param string $method
      * @param $path
-     * @param array $params
+     * @param array|string $params
      * @return void
      * @throws Exception
      */
-    public function request(string $method, $path, array $params = []): void
+    public function request(string $method, $path, array|string $params = []): void
     {
         if (!str_starts_with($path, '/')) {
             $path = '/' . $path;
@@ -70,10 +66,6 @@ class CoroutineClient extends ClientAbstracts
             $this->execute($url, $data);
 
         } catch (\Throwable $exception) {
-            Kiri::getDi()->get(Logger::class)->error('rpc', []);
-
-			Kiri::getLogger()->error(throwable($exception));
-
             $this->setStatusCode(-1);
             $this->setBody(jTraceEx($exception));
         }
@@ -89,17 +81,6 @@ class CoroutineClient extends ClientAbstracts
     private function execute($path, $data): void
     {
         $this->client->execute($this->setParams($path, $data));
-        if ($this->client->statusCode < 1) {
-            $logger = Kiri::getDi()->get(LoggerInterface::class);
-            $errMsg = sprintf("%s://%s:%s/%s -> error: %s", $this->isSSL() ? "https" : "http",
-                $this->getHost(), $this->getPort(), $path, $this->client->errMsg);
-
-            if (!empty($data)) {
-                $errMsg .= print_r($data, true);
-            }
-
-            $logger->error($errMsg);
-        }
         if (in_array($this->client->getStatusCode(), [502, 404])) {
             $this->retry($path, $data);
         } else {
@@ -118,13 +99,11 @@ class CoroutineClient extends ClientAbstracts
      */
     private function retry($path, $data): void
     {
-        if (Context::increment('retry') <= $this->retryNum) {
+        if (($this->num += 1) <= $this->retryNum) {
             sleep($this->retryTimeout);
 
             $this->execute($path, $data);
         } else {
-            Context::remove('retry');
-
             $this->setStatusCode($this->client->statusCode);
             $this->setBody($this->client->errMsg);
         }
@@ -157,7 +136,7 @@ class CoroutineClient extends ClientAbstracts
      */
     private function setParams($path, $data): string
     {
-        $content = $this->getData()->getContents();
+        $content = $this->getData();
         if (!empty($content)) {
             $this->client->setData($content);
         }

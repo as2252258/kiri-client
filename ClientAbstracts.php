@@ -5,12 +5,7 @@ namespace Kiri;
 
 
 use Closure;
-use Exception;
-use JetBrains\PhpStorm\Pure;
-use Kiri\Core\Help;
-use Kiri\Di\Context;
-use Kiri\Router\Constrict\Stream;
-use Psr\Http\Message\StreamInterface;
+use Swoole\Coroutine;
 use Swoole\Coroutine\System;
 
 defined('SPLIT_URL') or define('SPLIT_URL', '/(http[s]?:\/\/)?(([\w\-_]+\.)+\w+(:\d+)?)((\/[a-zA-Z0-9\-]+)+[\/]?(\?[a-zA-Z]+=.*)?)?/');
@@ -47,6 +42,7 @@ abstract class ClientAbstracts implements IClient
 	private string $ca = '';
 	private int $port = 80;
 
+    protected int $num = 0;
 
 	private ?array $_responseHeader = [];
 
@@ -68,7 +64,7 @@ abstract class ClientAbstracts implements IClient
 	protected ?string $body;
 
 
-	private ?StreamInterface $_data = NULL;
+	private string|array|null $_data = NULL;
 
 	private int $connect_timeout = 1;
 
@@ -214,21 +210,21 @@ abstract class ClientAbstracts implements IClient
 	}
 
 
-	/**
-	 * @param string $path
-	 * @param array $params
-	 */
-	public function post(string $path, array $params = []): void
+    /**
+     * @param string $path
+     * @param array|string $params
+     */
+	public function post(string $path, array|string $params = []): void
 	{
 		$this->request(self::POST, $path, $params);
 	}
 
 
-	/**
-	 * @param string $path
-	 * @param array $params
-	 */
-	public function put(string $path, array $params = []): void
+    /**
+     * @param string $path
+     * @param array|string $params
+     */
+	public function put(string $path, array|string $params = []): void
 	{
 		$this->request(self::PUT, $path, $params);
 	}
@@ -245,58 +241,61 @@ abstract class ClientAbstracts implements IClient
 	}
 
 
-	/**
-	 * @param string $path
-	 * @param array $params
-	 */
-	public function head(string $path, array $params = []): void
+    /**
+     * @param string $path
+     * @param array|string $params
+     */
+	public function head(string $path, array|string $params = []): void
 	{
 		$this->request(self::HEAD, $path, $params);
 	}
 
 
-	/**
-	 * @param string $path
-	 * @param array $params
-	 */
-	public function get(string $path, array $params = []): void
+    /**
+     * @param string $path
+     * @param array|string $params
+     */
+	public function get(string $path, array|string $params = []): void
 	{
+        if (is_array($params)) {
+            $params = http_build_query($params);
+        }
 		$this->request(self::GET, $path, $params);
 	}
 
-	/**
-	 * @param string $path
-	 * @param array $params
-	 */
-	public function option(string $path, array $params = []): void
+    /**
+     * @param string $path
+     * @param array|string $params
+     */
+	public function option(string $path, array|string $params = []): void
 	{
 		$this->request(self::OPTIONS, $path, $params);
 	}
 
-	/**
-	 * @param string $path
-	 * @param array $params
-	 */
-	public function delete(string $path, array $params = []): void
+    /**
+     * @param string $path
+     * @param array|string $params
+     */
+	public function delete(string $path, array|string $params = []): void
 	{
 		$this->request(self::DELETE, $path, $params);
 	}
 
-	/**
-	 * @param string $path
-	 * @param array $params
-	 */
-	public function options(string $path, array $params = []): void
+    /**
+     * @param string $path
+     * @param array|string $params
+     */
+	public function options(string $path, array|string $params = []): void
 	{
 		$this->request(self::OPTIONS, $path, $params);
 
 	}
 
-	/**
-	 * @param string $path
-	 * @param array $params
-	 */
-	public function upload(string $path, array $params = []): void
+    /**
+     * @param string $path
+     * @param array|string $params
+     */
+	public function upload(string $path, array|string $params = []): void
 	{
 		$this->request(self::UPLOAD, $path, $params);
 	}
@@ -313,7 +312,7 @@ abstract class ClientAbstracts implements IClient
 	/**
 	 * @return int
 	 */
-	#[Pure] protected function getHostPort(): int
+	protected function getHostPort(): int
 	{
 		if (!empty($this->getPort())) {
 			return $this->getPort();
@@ -332,7 +331,7 @@ abstract class ClientAbstracts implements IClient
 	{
 		$this->host = $host;
 		if (!preg_match('/(\d{1,3}\.){3}\d{1,3}/', $host)) {
-			if (Context::inCoroutine()) {
+			if (class_exists(Coroutine::class) && Coroutine::getCid() > -1) {
 				$this->host = System::gethostbyname($host);
 			}
 			return $this->withAddedHeader('Host', $host);
@@ -535,7 +534,7 @@ abstract class ClientAbstracts implements IClient
 	/**
 	 * @return int
 	 */
-	#[Pure] public function getPort(): int
+	public function getPort(): int
 	{
 		if ($this->isSSL()) {
 			return 443;
@@ -557,26 +556,20 @@ abstract class ClientAbstracts implements IClient
 	}
 
 
-	/**
-	 * @return StreamInterface
-	 */
-	public function getData(): StreamInterface
+    /**
+     * @return string|null
+     */
+	public function getData(): ?string
 	{
-		if (!$this->_data) {
-			$this->_data = new Stream();
-		}
 		return $this->_data;
 	}
 
 	/**
-	 * @param string|StreamInterface $data
+	 * @param string|null $data
 	 * @return ClientAbstracts
 	 */
-	public function withBody(string|StreamInterface $data): static
+	public function withBody(?string $data): static
 	{
-		if (is_string($data)) {
-			$data = new Stream($data);
-		}
 		$this->_data = $data;
 		return $this;
 	}
@@ -650,60 +643,10 @@ abstract class ClientAbstracts implements IClient
 	 */
 	protected function mergeParams($newData): ?string
 	{
-		if (!is_string($newData)) {
-			return $this->toRequest($newData);
-		}
+        if (is_array($newData)) {
+            return json_encode($newData,JSON_UNESCAPED_UNICODE);
+        }
 		return (string)$newData;
-	}
-
-
-	/**
-	 * @param $data
-	 * @return string
-	 */
-	protected function toRequest($data): string
-	{
-		if (is_string($data)) {
-			return $data;
-		}
-		$contentType = 'application/x-www-form-urlencoded';
-		if (isset($this->header['Content-Type'])) {
-			$contentType = $this->header['Content-Type'];
-		} else if (isset($this->header['content-type'])) {
-			$contentType = $this->header['content-type'];
-		}
-		if (str_contains($contentType, 'json')) {
-			return Help::toJson($data);
-		} else if (str_contains($contentType, 'xml')) {
-			return Help::toXml($data);
-		} else {
-			return http_build_query($data);
-		}
-	}
-
-
-	/**
-	 * @param $data
-	 * @param $body
-	 * @return array|string|null
-	 * @throws Exception
-	 */
-	protected function resolve($data, $body): array|string|null
-	{
-		if (is_array($body)) {
-			return $body;
-		}
-		$type = $data['content-type'] ?? $data['Content-Type'] ?? 'text/html';
-		if (str_contains($type, 'text/html')) {
-			return $body;
-		} else if (str_contains($type, 'json')) {
-			return json_decode($body, TRUE);
-		} else if (str_contains($type, 'xml')) {
-			return Help::xmlToArray($body);
-		} else if (str_contains($type, 'plain')) {
-			return Help::toArray($body);
-		}
-		return $body;
 	}
 
 
@@ -711,7 +654,7 @@ abstract class ClientAbstracts implements IClient
 	 * @return bool
 	 * check isPost Request
 	 */
-	#[Pure] protected function isPost(): bool
+	protected function isPost(): bool
 	{
 		return strtolower($this->method) === self::POST;
 	}
@@ -720,7 +663,7 @@ abstract class ClientAbstracts implements IClient
 	 * @return bool
 	 * check isPost Request
 	 */
-	#[Pure] protected function isUpload(): bool
+	protected function isUpload(): bool
 	{
 		return strtolower($this->method) === self::UPLOAD;
 	}
@@ -731,7 +674,7 @@ abstract class ClientAbstracts implements IClient
 	 *
 	 * check isGet Request
 	 */
-	#[Pure] protected function isGet(): bool
+	protected function isGet(): bool
 	{
 		return strtolower($this->method) === self::GET;
 	}
@@ -742,7 +685,7 @@ abstract class ClientAbstracts implements IClient
 	 * @return array|string
 	 * 将请求参数进行编码
 	 */
-	#[Pure] protected function paramEncode($arr): array|string
+	protected function paramEncode($arr): array|string
 	{
 		if (!is_array($arr)) {
 			return $arr;
@@ -762,7 +705,7 @@ abstract class ClientAbstracts implements IClient
 	 * @param string $string
 	 * @return array
 	 */
-	#[Pure] protected function matchHost(string $string): array
+	protected function matchHost(string $string): array
 	{
 		return [$this->host, $this->isSSL(), $string];
 	}
