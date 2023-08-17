@@ -327,15 +327,9 @@ abstract class ClientAbstracts implements IClient
 	 * @param string $host
 	 * @return ClientAbstracts
 	 */
-	private function withHost(string $host): static
+	protected function withHost(string $host): static
 	{
 		$this->host = $host;
-		if (!preg_match('/(\d{1,3}\.){3}\d{1,3}/', $host)) {
-			if (class_exists(Coroutine::class) && Coroutine::getCid() > -1) {
-				$this->host = System::gethostbyname($host);
-			}
-			return $this->withAddedHeader('Host', $host);
-		}
 		return $this;
 	}
 
