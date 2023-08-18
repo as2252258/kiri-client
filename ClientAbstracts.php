@@ -5,6 +5,7 @@ namespace Kiri;
 
 
 use Closure;
+use Kiri\Di\Context;
 use Swoole\Coroutine;
 use Swoole\Coroutine\System;
 
@@ -330,6 +331,10 @@ abstract class ClientAbstracts implements IClient
 	protected function withHost(string $host): static
 	{
 		$this->host = $host;
+        if (Context::inCoroutine() && !preg_match('/(\d{1,3}\.){3}\d{1,3}/', $host)) {
+            $this->host = System::gethostbyname($host);
+            $this->withAddedHeader('Host', $host);
+        }
 		return $this;
 	}
 
