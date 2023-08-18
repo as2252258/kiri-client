@@ -80,6 +80,9 @@ class CurlClient extends ClientAbstracts
         if (!empty($this->getSslCertFile()) && file_exists($this->getSslCertFile())) {
             curl_setopt($this->client, CURLOPT_SSLCERT, $this->getSslCertFile());
         }
+        if (!empty($this->getCa()) && file_exists($this->getCa())) {
+            curl_setopt($this->client, CURLOPT_CAINFO, $this->getCa());
+        }
     }
 
 
