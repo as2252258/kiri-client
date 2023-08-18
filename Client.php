@@ -15,13 +15,18 @@ class Client
 	private CoroutineClient|CurlClient $abstracts;
 
 
-	/**
-	 * @param string $host
-	 * @param int $port
-	 * @param bool $isSsl
-	 */
-	public function __construct(string $host, int $port, bool $isSsl = false)
+    /**
+     * @param string $host
+     * @param int $port
+     * @param bool $isSsl
+     * @param bool $useCurl
+     */
+	public function __construct(string $host, int $port, bool $isSsl = false, bool $useCurl = false)
 	{
+        if ($useCurl) {
+            $this->abstracts = new CurlClient($host, $port, $isSsl);
+            return;
+        }
 		if (class_exists(Coroutine::class) && Coroutine::getCid() > -1) {
 			$this->abstracts = new CoroutineClient($host, $port, $isSsl);
 		} else {
