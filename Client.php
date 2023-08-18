@@ -19,7 +19,6 @@ class Client
      * @param string $host
      * @param int $port
      * @param bool $isSsl
-     * @param bool $useCurl
      */
 	public function __construct(string $host, int $port, bool $isSsl = false)
 	{
