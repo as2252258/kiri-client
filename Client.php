@@ -21,12 +21,8 @@ class Client
      * @param bool $isSsl
      * @param bool $useCurl
      */
-	public function __construct(string $host, int $port, bool $isSsl = false, bool $useCurl = false)
+	public function __construct(string $host, int $port, bool $isSsl = false)
 	{
-        if ($useCurl) {
-            $this->abstracts = new CurlClient($host, $port, $isSsl);
-            return;
-        }
 		if (class_exists(Coroutine::class) && Coroutine::getCid() > -1) {
 			$this->abstracts = new CoroutineClient($host, $port, $isSsl);
 		} else {
