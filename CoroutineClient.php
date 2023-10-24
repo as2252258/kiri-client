@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace Kiri;
 
 use Exception;
-use Swoole\Coroutine;
 use Swoole\Coroutine\Http\Client as SwowClient;
 use Swoole\Coroutine\System;
 

@@ -5,9 +5,6 @@ namespace Kiri;
 
 
 use Closure;
-use Kiri\Di\Context;
-use Swoole\Coroutine;
-use Swoole\Coroutine\System;
 
 defined('SPLIT_URL') or define('SPLIT_URL', '/(http[s]?:\/\/)?(([\w\-_]+\.)+\w+(:\d+)?)((\/[a-zA-Z0-9\-]+)+[\/]?(\?[a-zA-Z]+=.*)?)?/');
 
