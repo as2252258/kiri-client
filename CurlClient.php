@@ -115,6 +115,11 @@ class CurlClient extends ClientAbstracts
         if ($method === self::POST || $method == self::UPLOAD) {
             curl_setopt($resource, CURLOPT_POST, 1);
         }
+        [$proxy, $port] = [$this->getProxyHost(), $this->getProxyPort()];
+        if (!empty($proxy) && $port > 0) {
+            curl_setopt($resource, CURLOPT_PROXYPORT, $port);
+            curl_setopt($resource, CURLOPT_PROXY, $proxy);
+        }
         curl_setopt($resource, CURLOPT_CUSTOMREQUEST, strtoupper($method));
         $this->client = $resource;
         if (!empty($this->caPath)) {

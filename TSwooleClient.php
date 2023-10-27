@@ -19,6 +19,12 @@ trait TSwooleClient
 		if ($this->getConnectTimeout() > 0) {
 			$params['timeout'] = $this->getConnectTimeout();
 		}
+
+        [$proxy, $port] = [$this->getProxyHost(), $this->getProxyPort()];
+        if (!empty($proxy) && $port > 0) {
+            $params['http_proxy_host'] = $proxy;
+            $params['http_proxy_port'] = $port;
+        }
 		if (empty($sslCert) || empty($sslKey) || empty($sslCa)) {
 			return $params;
 		}
