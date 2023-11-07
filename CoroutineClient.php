@@ -143,11 +143,8 @@ class CoroutineClient extends ClientAbstracts
         }
         if ($this->isGet()) {
             if (!empty($data)) $path .= '?' . $data;
-        } else {
-            $data = $this->mergeParams($data);
-            if (!empty($data)) {
-                $this->client->setData($data);
-            }
+        } else if (!empty($data)) {
+            $this->client->setData($data);
         }
         return $path;
     }
