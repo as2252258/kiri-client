@@ -34,11 +34,16 @@ class CoroutineClient extends ClientAbstracts
         if (!str_starts_with($path, '/')) {
             $path = '/' . $path;
         }
+
+        $host = $this->getHost();
+        if (!preg_match('/(\d{1,3}\.){3}\d{1,3}/', $host)) {
+            $this->withAddedHeader('Host', $host);
+        }
         $this->withMethod($method)
-            ->coroutine(
-                $path,
-                $this->paramEncode($params)
-            );
+             ->coroutine(
+                 $path,
+                 $this->paramEncode($params)
+             );
     }
 
 
