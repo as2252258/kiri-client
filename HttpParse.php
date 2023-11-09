@@ -19,7 +19,7 @@ class HttpParse
 	{
 		$first = '';
 		$tp = [];
-		foreach ($object as $key => $value) {
+		foreach ($object as $value) {
 			if ($value === null) {
 				continue;
 			}
