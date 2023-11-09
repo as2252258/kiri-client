@@ -11,7 +11,6 @@ namespace Kiri;
 
 use Exception;
 use Swoole\Coroutine\Http\Client as SwowClient;
-use Swoole\Coroutine\System;
 
 /**
  * Class Client
