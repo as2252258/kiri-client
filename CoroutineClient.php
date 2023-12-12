@@ -26,7 +26,7 @@ class CoroutineClient extends ClientAbstracts
      * @param $path
      * @param array|string $params
      * @return void
-     * @throws Exception
+     * @throws
      */
     public function request(string $method, $path, array|string $params = []): void
     {
@@ -58,7 +58,7 @@ class CoroutineClient extends ClientAbstracts
     /**
      * @param $url
      * @param array|string $data
-     * @throws Exception 使用swoole协程方式请求
+     * @throws
      */
     private function coroutine($url, array|string $data = []): void
     {
@@ -81,7 +81,7 @@ class CoroutineClient extends ClientAbstracts
      * @param $path
      * @param $data
      * @return void
-     * @throws Exception
+     * @throws
      */
     private function execute($path, $data): void
     {
@@ -100,7 +100,7 @@ class CoroutineClient extends ClientAbstracts
      * @param $path
      * @param $data
      * @return void
-     * @throws Exception
+     * @throws
      */
     private function retry($path, $data): void
     {

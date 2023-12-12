@@ -18,7 +18,7 @@ class CurlClient extends ClientAbstracts
      * @param $method
      * @param $path
      * @param array|string $params
-     * @throws Exception
+     * @throws
      */
     public function request($method, $path, array|string $params = []): void
     {
@@ -39,7 +39,7 @@ class CurlClient extends ClientAbstracts
      * @param $path
      * @param $method
      * @param $params
-     * @throws Exception
+     * @throws
      */
     private function getCurlHandler($path, $method, $params): void
     {
@@ -70,7 +70,7 @@ class CurlClient extends ClientAbstracts
 
     /**
      * @return void
-     * @throws Exception
+     * @throws
      */
     private function curlHandlerSslSet(): void
     {
@@ -90,7 +90,7 @@ class CurlClient extends ClientAbstracts
      * @param $resource
      * @param $path
      * @param $method
-     * @throws Exception
+     * @throws
      */
     private function do($resource, $path, $method): void
     {
@@ -143,7 +143,7 @@ class CurlClient extends ClientAbstracts
 
 
     /**
-     * @throws Exception
+     * @throws
      */
     private function execute(): void
     {
@@ -159,7 +159,7 @@ class CurlClient extends ClientAbstracts
 
     /**
      * @return void
-     * @throws Exception
+     * @throws
      */
     private function retry(): void
     {
@@ -186,7 +186,7 @@ class CurlClient extends ClientAbstracts
     /**
      * @param $output
      * @return void
-     * @throws Exception
+     * @throws
      */
     private function explode($output): void
     {

@@ -22,7 +22,7 @@ class TcpClient
      * @param string $host
      * @param int $port
      * @param int $socket
-     * @throws Exception
+     * @throws
      */
     public function __construct(readonly public string $host, readonly public int $port, readonly public int $socket = SWOOLE_SOCK_TCP)
     {
@@ -32,7 +32,7 @@ class TcpClient
 
     /**
      * @return void
-     * @throws Exception
+     * @throws
      */
     public function reconnect(): void
     {
