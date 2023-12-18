@@ -47,20 +47,19 @@ class CoroutineClient extends ClientAbstracts
 
 
     /**
-     * @param $path
+     * @param string $path
      * @return $this
      */
-    public function withCAInfo($path): static
+    public function withCAInfo(string $path): static
     {
         return $this;
     }
 
     /**
-     * @param $url
+     * @param string $url
      * @param array|string $data
-     * @throws
      */
-    private function coroutine($url, array|string $data = []): void
+    private function coroutine(string $url, array|string $data = []): void
     {
         try {
             $this->generate_client($this->getHost(), $this->isSSL());
@@ -78,12 +77,11 @@ class CoroutineClient extends ClientAbstracts
 
 
     /**
-     * @param $path
-     * @param $data
+     * @param string $path
+     * @param array|string $data
      * @return void
-     * @throws
      */
-    private function execute($path, $data): void
+    private function execute(string $path, array|string $data): void
     {
         $this->client->execute($this->setParams($path, $data));
         if (in_array($this->client->getStatusCode(), [502, 404])) {
@@ -97,12 +95,11 @@ class CoroutineClient extends ClientAbstracts
 
 
     /**
-     * @param $path
-     * @param $data
+     * @param string $path
+     * @param array|string $data
      * @return void
-     * @throws
      */
-    private function retry($path, $data): void
+    private function retry(string $path, array|string $data): void
     {
         if (($this->num += 1) <= $this->retryNum) {
             sleep($this->retryTimeout);
@@ -115,10 +112,10 @@ class CoroutineClient extends ClientAbstracts
     }
 
     /**
-     * @param $host
-     * @param $isHttps
+     * @param string $host
+     * @param bool $isHttps
      */
-    private function generate_client($host, $isHttps): void
+    private function generate_client(string $host, bool $isHttps): void
     {
         if ($isHttps || $this->isSSL()) {
             $this->client = new SwowClient($host, 443, true);
@@ -135,11 +132,11 @@ class CoroutineClient extends ClientAbstracts
 
 
     /**
-     * @param $path
-     * @param $data
+     * @param string $path
+     * @param mixed $data
      * @return string
      */
-    private function setParams($path, $data): string
+    private function setParams(string $path, mixed $data): string
     {
         $content = $this->getData();
         if (!empty($content)) {

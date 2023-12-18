@@ -40,11 +40,10 @@ class HttpParse
     }
 
     /**
-     * @param $data
+     * @param array|string $data
      * @return string
-     * @throws
      */
-    public static function parse($data): string
+    public static function parse(array|string $data): string
     {
         $tmp = [];
         if (is_string($data)) {
@@ -65,7 +64,7 @@ class HttpParse
      * @return string
      * @throws
      */
-    private static function ifElse($t, $qt): string
+    private static function ifElse(string $t, mixed $qt): string
     {
         if (is_numeric($qt)) {
             return $t . '=' . $qt;

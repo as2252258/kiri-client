@@ -4,9 +4,6 @@ declare(strict_types=1);
 namespace Kiri;
 
 
-use Exception;
-
-
 /**
  * Class CurlClient
  * @package Http\Handler\Client
@@ -14,13 +11,14 @@ use Exception;
 class CurlClient extends ClientAbstracts
 {
 
+
     /**
-     * @param $method
-     * @param $path
+     * @param string $method
+     * @param string $path
      * @param array|string $params
-     * @throws
+     * @return void
      */
-    public function request($method, $path, array|string $params = []): void
+    public function request(string $method, string $path, array|string $params = []): void
     {
         if (!str_starts_with($path, '/')) {
             $path = '/' . $path;
@@ -36,12 +34,12 @@ class CurlClient extends ClientAbstracts
 
 
     /**
-     * @param $path
-     * @param $method
+     * @param string $path
+     * @param string $method
      * @param $params
-     * @throws
+     * @return void
      */
-    private function getCurlHandler($path, $method, $params): void
+    private function getCurlHandler(string $path, string $method, $params): void
     {
         $host = $this->isSSL() ? 'https://' . $this->getHost() : 'http://' . $this->getHost();
         if ($this->getPort() != 443 && $this->getPort() != 80) {
@@ -87,12 +85,12 @@ class CurlClient extends ClientAbstracts
 
 
     /**
-     * @param $resource
-     * @param $path
-     * @param $method
-     * @throws
+     * @param mixed $resource
+     * @param string $path
+     * @param string $method
+     * @return void
      */
-    private function do($resource, $path, $method): void
+    private function do(mixed $resource, string $path, string $method): void
     {
         curl_setopt($resource, CURLOPT_URL, $path);
         curl_setopt($resource, CURLOPT_TIMEOUT, $this->getTimeout());                     // 超时设置
@@ -128,14 +126,17 @@ class CurlClient extends ClientAbstracts
     }
 
 
+    /**
+     * @var string
+     */
     private string $caPath = '';
 
 
     /**
-     * @param $path
+     * @param string $path
      * @return $this
      */
-    public function withCAInfo($path): static
+    public function withCAInfo(string $path): static
     {
         $this->caPath = $path;
         return $this;
@@ -184,11 +185,11 @@ class CurlClient extends ClientAbstracts
 
 
     /**
-     * @param $output
+     * @param string $output
      * @return void
      * @throws
      */
-    private function explode($output): void
+    private function explode(string $output): void
     {
         [$header, $body] = explode("\r\n\r\n", $output, 2);
         if ($header == 'HTTP/1.1 100 Continue') {
@@ -206,21 +207,6 @@ class CurlClient extends ClientAbstracts
             $this->setBody($body);
             $this->setResponseHeader($header);
         }
-    }
-
-    /**
-     * @param $headers
-     * @return array
-     */
-    private function headerFormat($headers): array
-    {
-        $_tmp = [];
-        foreach ($headers as $val) {
-            $trim = explode(': ', trim($val));
-
-            $_tmp[strtolower($trim[0])] = [$trim[1] ?? ''];
-        }
-        return $_tmp;
     }
 
 

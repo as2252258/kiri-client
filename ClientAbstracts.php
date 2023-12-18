@@ -17,13 +17,13 @@ defined('SPLIT_URL') or define('SPLIT_URL', '/(http[s]?:\/\/)?(([\w\-_]+\.)+\w+(
 abstract class ClientAbstracts implements IClient
 {
 
-    const POST    = 'post';
-    const UPLOAD  = 'upload';
-    const GET     = 'get';
-    const DELETE  = 'delete';
-    const OPTIONS = 'options';
-    const HEAD    = 'head';
-    const PUT     = 'put';
+    const string POST    = 'post';
+    const string UPLOAD  = 'upload';
+    const string GET     = 'get';
+    const string DELETE  = 'delete';
+    const string OPTIONS = 'options';
+    const string HEAD    = 'head';
+    const string PUT     = 'put';
 
     private string $host            = '';
     private array  $header          = [];
@@ -143,10 +143,10 @@ abstract class ClientAbstracts implements IClient
 
 
     /**
-     * @param $bool
+     * @param bool $bool
      * @return $this
      */
-    public function withVerifyPeer($bool): static
+    public function withVerifyPeer(bool $bool): static
     {
         $this->verifyPeer = $bool;
         return $this;
@@ -227,11 +227,11 @@ abstract class ClientAbstracts implements IClient
 
 
     /**
-     * @param $host
-     * @param $port
+     * @param string $host
+     * @param int $port
      * @param false $isSSL
      */
-    public function __construct($host, $port, bool $isSSL = FALSE)
+    public function __construct(string $host, int $port, bool $isSSL = FALSE)
     {
         $this->withHost($host)->withPort($port)->withIsSSL($isSSL);
     }
@@ -405,11 +405,11 @@ abstract class ClientAbstracts implements IClient
     }
 
     /**
-     * @param $key
-     * @param $value
+     * @param string $key
+     * @param string|array $value
      * @return ClientAbstracts
      */
-    public function withAddedHeader($key, $value): static
+    public function withAddedHeader(string $key, string|array $value): static
     {
         $this->header[$key] = $value;
         return $this;
@@ -615,10 +615,10 @@ abstract class ClientAbstracts implements IClient
 
 
     /**
-     * @param $host
+     * @param string $host
      * @return string|string[]
      */
-    protected function replaceHost($host): array|string
+    protected function replaceHost(string $host): array|string
     {
         if ($this->isHttp($host)) {
             return str_replace('http://', '', $host);
@@ -631,43 +631,43 @@ abstract class ClientAbstracts implements IClient
 
 
     /**
-     * @param $url
+     * @param string $url
      * @return false|int
      */
-    protected function checkIsIp($url): bool|int
+    protected function checkIsIp(string $url): bool|int
     {
         return preg_match('/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/', $url);
     }
 
     /**
-     * @param $url
+     * @param string $url
      * @return bool
      */
-    protected function isHttp($url): bool
+    protected function isHttp(string $url): bool
     {
         return str_starts_with($url, 'http://');
     }
 
     /**
-     * @param $url
+     * @param string $url
      * @return bool
      */
-    protected function isHttps($url): bool
+    protected function isHttps(string $url): bool
     {
         return str_starts_with($url, 'https://');
     }
 
 
     /**
-     * @param $newData
+     * @param array|string $newData
      * @return string|null
      */
-    protected function mergeParams($newData): ?string
+    protected function mergeParams(array|string $newData): ?string
     {
         if (is_array($newData)) {
             return json_encode($newData, JSON_UNESCAPED_UNICODE);
         }
-        return (string)$newData;
+        return $newData;
     }
 
 
@@ -701,12 +701,12 @@ abstract class ClientAbstracts implements IClient
     }
 
     /**
-     * @param        $arr
+     * @param array|string $arr
      *
      * @return array|string
      * 将请求参数进行编码
      */
-    protected function paramEncode($arr): array|string
+    protected function paramEncode(array|string $arr): array|string
     {
         if (!is_array($arr)) {
             return $arr;
@@ -733,11 +733,11 @@ abstract class ClientAbstracts implements IClient
 
 
     /**
-     * @param $path
-     * @param $params
+     * @param string $path
+     * @param array|string $params
      * @return string
      */
-    protected function joinGetParams($path, $params): string
+    protected function joinGetParams(string $path, array|string $params): string
     {
         if (empty($params)) {
             return $path;
